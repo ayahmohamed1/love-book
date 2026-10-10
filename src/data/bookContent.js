@@ -9,11 +9,11 @@
 export const bookContent = {
   // ألوان الثيم (برجاندي مخملي فاخر وداكن مطابق للصورة + أبيض نقي)
   theme: {
-    burgundy: "#4a1017",        // لون البرجاندي المخملي المأخوذ من صورتك
-    burgundyDark: "#33090e",    // درجات الظلال العميقة
-    burgundyAccent: "#5c151e",  // درجات اللمسات الدافئة
-    goldScript: "#e29b62",      // اللون الذهبي للكلمات المتداخلة
-    creamCard: "#fbf8f3",       // لون الورق والكروت العاجية
+    burgundy: "#4a1017",
+    burgundyDark: "#30080d",
+    burgundyAccent: "#631520",
+    goldScript: "#e29b62",
+    creamCard: "#fbf8f3",
     white: "#ffffff",
   },
 
@@ -24,28 +24,27 @@ export const bookContent = {
     columns: [
       {
         title: "HISTORIA",
-        desc: "Un conjunto de momentos, desde lo más simple hasta los más mágicos, y cada día que pasa solo lo hace más especial."
+        desc: "Un conjunto de momentos, desde lo más simple hasta los más mágicos."
       },
       {
         title: "MEMORIES",
-        desc: "Fotos espontáneas, miradas llenas de amor y esos momentos que aunque parezcan pequeños en la memoria, hoy significan todo."
+        desc: "Fotos espontáneas, miradas llenas de amor y esos momentos que hoy significan todo."
       },
       {
         title: "WISHLIST",
-        desc: "Un recordatorio de todo lo que nos espera, de las experiencias que nos iluminan y de los rincones que aún nos faltan visitar."
+        desc: "Un recordatorio de todo lo que nos espera y nos ilumina."
       },
       {
         title: "PLANEADOR",
-        desc: "Una oportunidad para seguir sumando locura, abrazos y recuerdos que nos hagan sonreír con solo recordarlos."
+        desc: "Una oportunidad para seguir sumando locura y abrazos."
       }
     ],
     // صورة الغلاف توضع كاملة داخل الإطار الأبيض بدون أي قص
     image: "/images/Couple (2).jpg",
   },
 
-  // 2️⃣ التقليبة الأولى (Spread 1)
+  // 2️⃣ الصفحة 1: ميدالية القلبين + رسالة الحب
   spread1: {
-    // الصفحة اليسرى: ميدالية القلبين + رسالة الحب
     leftPage: {
       locket: {
         titleLeft: "My",
@@ -62,7 +61,7 @@ export const bookContent = {
       }
     },
 
-    // الصفحة اليمنى: شبكة 9 صور
+    // 3️⃣ الصفحة 2: شبكة 9 صور (Full Page)
     rightPage: {
       photos: [
         { id: 1, url: "/images/grid-1.jpg" },
@@ -78,19 +77,18 @@ export const bookContent = {
     }
   },
 
-  // 3️⃣ التقليبة الثانية (Spread 2)
+  // 4️⃣ الصفحة 3: مشغل الأغنية العصري (Modern Burgundy Player)
   spread2: {
-    // الصفحة اليسرى: مشغل الأغنية بطابع الطابع البريدي
     leftPage: {
       song: {
-        title: "Por primera vez",
-        artist: "Camilo y Evaluna Montaner",
+        title: "Our Song",
+        artist: "every word for you",
         stampImage: "/images/song-cover.jpg",
         audioUrl: "/audio/song.mp3",
       }
     },
 
-    // الصفحة اليمنى: LOVE LOVE LOVE وبولارويد
+    // 5️⃣ الصفحة 4: LOVE LOVE LOVE وبولارويد (Full Page)
     rightPage: {
       bigWords: ["LOVE", "LOVE", "LOVE", "LOVE"],
       cursiveOverlays: [
@@ -117,7 +115,7 @@ export const bookContent = {
     }
   },
 
-  // 4️⃣ الصفحة الختامية (Back Page - You are loved)
+  // 6️⃣ الصفحة 5: كارت You Are Loved (Back Page)
   backPage: {
     image: "/images/back-cover.jpg",
     title: "You are",

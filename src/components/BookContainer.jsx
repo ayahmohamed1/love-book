@@ -8,12 +8,18 @@ import BackCover from './BackCover';
 import { sounds } from '../utils/soundEffects';
 
 export function BookContainer({ content }) {
-  // 0: Cover (Closed), 1: Spread 1 (Open), 2: Spread 2 (Open), 3: Back Page (Open or Closed)
+  // Single-Page Book Pages: 0 to 5
+  // 0: Cover (OUR LOVE)
+  // 1: Locket + Love Letter
+  // 2: 9-Photos Grid
+  // 3: Music Player
+  // 4: LOVE LOVE LOVE Typography
+  // 5: You Are Loved (Back Page)
   const [currentPage, setCurrentPage] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
   const [flipDir, setFlipDir] = useState('forward');
 
-  const totalPages = 4;
+  const totalPages = 6;
 
   const flipTo = useCallback((target, dir) => {
     if (isFlipping || target === currentPage || target < 0 || target >= totalPages) return;
@@ -24,7 +30,7 @@ export function BookContainer({ content }) {
     setTimeout(() => {
       setCurrentPage(target);
       setIsFlipping(false);
-    }, 450);
+    }, 420);
   }, [currentPage, isFlipping, totalPages]);
 
   const flipForward = useCallback(() => {
@@ -38,6 +44,17 @@ export function BookContainer({ content }) {
       flipTo(currentPage - 1, 'backward');
     }
   }, [currentPage, flipTo]);
+
+  // Handle click on page: click left side flips back, click right side flips forward
+  const handlePageClick = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    if (clickX < rect.width * 0.35) {
+      flipBackward();
+    } else {
+      flipForward();
+    }
+  };
 
   // Keyboard navigation
   useEffect(() => {
@@ -54,85 +71,69 @@ export function BookContainer({ content }) {
 
   return (
     <div className="book-stage-viewport">
-      {/* 3D Interactive Book */}
-      <div className={`book-object ${currentPage === 0 ? 'book-closed' : 'book-open'} ${isFlipping ? `is-flipping-${flipDir}` : ''}`}>
-        
-        {/* ==============================================================
-            PAGE 0: CLOSED COVER
-            ============================================================== */}
-        {currentPage === 0 && (
-          <div className="book-single-cover" onClick={flipForward}>
+      {/* 3D Single-Page Book Object */}
+      <div
+        className={`single-book-card ${isFlipping ? `is-turning-${flipDir}` : ''}`}
+        onClick={handlePageClick}
+      >
+        {/* Hardcover Left Spine Depth */}
+        <div className="hardcover-spine-edge"></div>
+
+        {/* Dynamic Page Render */}
+        <div className="single-page-content-wrapper">
+          {currentPage === 0 && (
             <CoverPage
               data={content.cover}
               onOpenBook={flipForward}
             />
-            {/* Hardcover thickness & shadow */}
-            <div className="hardcover-edge-spine"></div>
-            <div className="page-curl-corner-hint"></div>
-          </div>
-        )}
+          )}
 
-        {/* ==============================================================
-            PAGE 1: SPREAD 1 (Locket + Letter & 9-Photos Grid)
-            ============================================================== */}
-        {currentPage === 1 && (
-          <div className="book-spread-wrapper">
-            {/* Left Page (Click to flip backward to Cover) */}
-            <div className="spread-half spread-left-page" onClick={flipBackward}>
-              <Spread1Left data={content.spread1.leftPage} />
-              <div className="page-turn-hint-left"></div>
-            </div>
+          {currentPage === 1 && (
+            <Spread1Left data={content.spread1.leftPage} />
+          )}
 
-            {/* Middle Book Spine */}
-            <div className="book-center-spine">
-              <div className="spine-crease-shadow"></div>
-            </div>
+          {currentPage === 2 && (
+            <Spread1Right data={content.spread1.rightPage} />
+          )}
 
-            {/* Right Page (Click to flip forward to Spread 2) */}
-            <div className="spread-half spread-right-page" onClick={flipForward}>
-              <Spread1Right data={content.spread1.rightPage} />
-              <div className="page-turn-hint-right"></div>
-            </div>
-          </div>
-        )}
+          {currentPage === 3 && (
+            <Spread2Left data={content.spread2.leftPage} />
+          )}
 
-        {/* ==============================================================
-            PAGE 2: SPREAD 2 (Music Player & LOVE Typography with Polaroids)
-            ============================================================== */}
-        {currentPage === 2 && (
-          <div className="book-spread-wrapper">
-            {/* Left Page (Click to flip backward to Spread 1) */}
-            <div className="spread-half spread-left-page" onClick={flipBackward}>
-              <Spread2Left data={content.spread2.leftPage} />
-              <div className="page-turn-hint-left"></div>
-            </div>
+          {currentPage === 4 && (
+            <Spread2Right data={content.spread2.rightPage} />
+          )}
 
-            {/* Middle Book Spine */}
-            <div className="book-center-spine">
-              <div className="spine-crease-shadow"></div>
-            </div>
-
-            {/* Right Page (Click to flip forward to Back Page) */}
-            <div className="spread-half spread-right-page" onClick={flipForward}>
-              <Spread2Right data={content.spread2.rightPage} />
-              <div className="page-turn-hint-right"></div>
-            </div>
-          </div>
-        )}
-
-        {/* ==============================================================
-            PAGE 3: SPREAD 3 / BACK PAGE (You are loved Card)
-            ============================================================== */}
-        {currentPage === 3 && (
-          <div className="book-single-cover back-cover-view" onClick={flipBackward}>
+          {currentPage === 5 && (
             <BackCover data={content.backPage} />
-            <div className="hardcover-edge-spine spine-right"></div>
-            <div className="page-curl-corner-hint flip-back-hint"></div>
-          </div>
+          )}
+        </div>
+
+        {/* Subtle Corner Curl Indicator */}
+        {currentPage < totalPages - 1 && (
+          <div className="page-curl-corner-hint next-hint" title="اضغط للتقليب للأمام"></div>
+        )}
+        {currentPage > 0 && (
+          <div className="page-curl-corner-hint prev-hint" title="اضغط للتقليب للخلف"></div>
         )}
 
-        {/* 3D Floor Shadow */}
+        {/* Book Floor Drop Shadow */}
         <div className="book-floor-shadow"></div>
+      </div>
+
+      {/* Elegant Minimalist Page Indicator Dots */}
+      <div className="page-indicator-dots" aria-label="Book pages indicator">
+        {Array.from({ length: totalPages }).map((_, idx) => (
+          <button
+            key={idx}
+            className={`indicator-dot ${currentPage === idx ? 'active-dot' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              flipTo(idx, idx > currentPage ? 'forward' : 'backward');
+            }}
+            aria-label={`Go to page ${idx + 1}`}
+          />
+        ))}
       </div>
     </div>
   );

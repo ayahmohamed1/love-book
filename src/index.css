@@ -1,13 +1,14 @@
 /* =========================================================================
-   👑 LUXURY INTERACTIVE 3D LOVE BOOK
+   👑 LUXURY SINGLE-PAGE 3D LOVE BOOK
    Palette: Rich Velvet Damask Burgundy (#4a1017) & Crisp Pure White (#ffffff)
-   Authentic Physical Book with Two Facing Pages (Desktop & Mobile)
+   Clean Single-Page Experience (Flawless on Mobile & Desktop)
    ========================================================================= */
 
 :root {
   --burgundy-velvet: #4a1017;
-  --burgundy-dark: #32080d;
-  --burgundy-accent: #5e151e;
+  --burgundy-dark: #2e070c;
+  --burgundy-accent: #6b1723;
+  --burgundy-glow: #9e1f30;
   --gold-script: #e29b62;
   --card-cream: #fbf8f3;
   --paper-white: #ffffff;
@@ -43,64 +44,108 @@ body {
 }
 
 /* =========================================================================
-   VIEWPORT & 3D BOOK CONTAINER
+   VIEWPORT & SINGLE-PAGE 3D BOOK
    ========================================================================= */
 .book-stage-viewport {
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   perspective: 2500px;
-  padding: 1rem;
+  padding: 1rem 0.5rem;
+  position: relative;
 }
 
-.book-object {
+.single-book-card {
+  width: min(520px, 92vw);
+  max-height: 87vh;
+  aspect-ratio: 438 / 579;
   position: relative;
   transform-style: preserve-3d;
-  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1), height 0.45s cubic-bezier(0.4, 0, 0.2, 1), aspect-ratio 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px 14px 14px 8px;
+  box-shadow: var(--shadow-book-3d);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Closed Hardcover Book State */
-.book-object.book-closed {
-  width: min(520px, 90vw);
-  max-height: 88vh;
-  aspect-ratio: 438 / 579;
+.single-book-card:hover {
+  transform: translateY(-3px) scale(1.008);
+  box-shadow: 0 35px 85px -10px rgba(0, 0, 0, 0.9);
 }
 
-/* Open Two-Page Spread State (ALWAYS 2 facing pages side-by-side) */
-.book-object.book-open {
-  width: min(1060px, 96vw);
-  max-height: 88vh;
-  aspect-ratio: 876 / 579;
+/* 3D Page Turn Animations */
+.single-book-card.is-turning-forward {
+  animation: turnForwardAnim 0.42s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* 3D Flip Transitions */
-.book-object.is-flipping-forward {
-  animation: pageFlipForward 0.45s ease-in-out forwards;
+.single-book-card.is-turning-backward {
+  animation: turnBackwardAnim 0.42s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-.book-object.is-flipping-backward {
-  animation: pageFlipBackward 0.45s ease-in-out forwards;
+@keyframes turnForwardAnim {
+  0% { transform: scale(1) rotateY(0deg); opacity: 1; }
+  50% { transform: scale(0.96) rotateY(-14deg); opacity: 0.65; }
+  100% { transform: scale(1) rotateY(0deg); opacity: 1; }
 }
 
-@keyframes pageFlipForward {
-  0% { transform: scale(1) rotateY(0deg); }
-  50% { transform: scale(0.97) rotateY(-7deg); }
-  100% { transform: scale(1) rotateY(0deg); }
+@keyframes turnBackwardAnim {
+  0% { transform: scale(1) rotateY(0deg); opacity: 1; }
+  50% { transform: scale(0.96) rotateY(14deg); opacity: 0.65; }
+  100% { transform: scale(1) rotateY(0deg); opacity: 1; }
 }
 
-@keyframes pageFlipBackward {
-  0% { transform: scale(1) rotateY(0deg); }
-  50% { transform: scale(0.97) rotateY(7deg); }
-  100% { transform: scale(1) rotateY(0deg); }
+/* Hardcover Spine Left Border Depth */
+.hardcover-spine-edge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 15px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0.12) 40%, rgba(0, 0, 0, 0.35) 100%);
+  border-radius: 8px 0 0 8px;
+  pointer-events: none;
+  z-index: 20;
 }
 
-/* Floor Ambient Shadow */
+/* Content Container for Each Page */
+.single-page-content-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Page Corner Curl Hints */
+.page-curl-corner-hint {
+  position: absolute;
+  bottom: 0;
+  width: 36px;
+  height: 36px;
+  pointer-events: none;
+  z-index: 25;
+}
+
+.page-curl-corner-hint.next-hint {
+  right: 0;
+  background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.35) 100%);
+  border-radius: 0 0 14px 0;
+}
+
+.page-curl-corner-hint.prev-hint {
+  left: 0;
+  background: linear-gradient(225deg, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.35) 100%);
+  border-radius: 0 0 0 8px;
+}
+
+/* Ambient Floor Shadow */
 .book-floor-shadow {
   position: absolute;
-  left: 6%;
-  right: 6%;
+  left: 5%;
+  right: 5%;
   bottom: -20px;
   height: 28px;
   background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 70%);
@@ -110,159 +155,14 @@ body {
 }
 
 /* =========================================================================
-   SINGLE HARDCOVER CARD (COVER & BACK)
-   ========================================================================= */
-.book-single-cover {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  border-radius: 6px 12px 12px 6px;
-  box-shadow: var(--shadow-book-3d);
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
-}
-
-.book-single-cover:hover {
-  transform: translateY(-3px) scale(1.01);
-  box-shadow: 0 35px 85px -10px rgba(0, 0, 0, 0.9);
-}
-
-.hardcover-edge-spine {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 15px;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0.12) 40%, rgba(0, 0, 0, 0.35) 100%);
-  border-radius: 6px 0 0 6px;
-  pointer-events: none;
-  z-index: 10;
-}
-
-.hardcover-edge-spine.spine-right {
-  left: auto;
-  right: 0;
-  border-radius: 0 6px 6px 0;
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0.12) 40%, rgba(0, 0, 0, 0.35) 100%);
-}
-
-.page-curl-corner-hint {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 38px;
-  height: 38px;
-  background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.3) 100%);
-  border-radius: 0 0 12px 0;
-  pointer-events: none;
-}
-
-.page-curl-corner-hint.flip-back-hint {
-  right: auto;
-  left: 0;
-  border-radius: 0 0 0 12px;
-  background: linear-gradient(225deg, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.3) 100%);
-}
-
-/* =========================================================================
-   TWO-PAGE SPREAD (ALWAYS 2 FACING PAGES SIDE-BY-SIDE)
-   ========================================================================= */
-.book-spread-wrapper {
-  display: flex !important;
-  flex-direction: row !important;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  box-shadow: var(--shadow-book-3d);
-  overflow: hidden;
-  background: #ffffff;
-  position: relative;
-}
-
-.spread-half {
-  flex: 1;
-  min-width: 0;
-  height: 100%;
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.spread-left-page {
-  border-radius: 10px 0 0 10px;
-  box-shadow: inset -16px 0 30px rgba(0, 0, 0, 0.12);
-}
-
-.spread-right-page {
-  border-radius: 0 10px 10px 0;
-  box-shadow: inset 16px 0 30px rgba(0, 0, 0, 0.12);
-}
-
-/* Book Center Spine Gutter */
-.book-center-spine {
-  width: 22px;
-  flex-shrink: 0;
-  height: 100%;
-  position: relative;
-  z-index: 15;
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.28) 0%,
-    rgba(0, 0, 0, 0.06) 35%,
-    rgba(0, 0, 0, 0.35) 50%,
-    rgba(0, 0, 0, 0.06) 65%,
-    rgba(0, 0, 0, 0.28) 100%
-  );
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
-}
-
-.spine-crease-shadow {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 1px;
-  background: rgba(255, 255, 255, 0.22);
-}
-
-/* Page turn hover hint edges */
-.spread-left-page:hover .page-turn-hint-left,
-.spread-right-page:hover .page-turn-hint-right {
-  opacity: 1;
-}
-
-.page-turn-hint-left,
-.page-turn-hint-right {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 22px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 20;
-}
-
-.page-turn-hint-left {
-  left: 0;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.18), transparent);
-}
-
-.page-turn-hint-right {
-  right: 0;
-  background: linear-gradient(to left, rgba(255, 255, 255, 0.18), transparent);
-}
-
-/* =========================================================================
-   1️⃣ COVER PAGE (OUR LOVE) - IMAGE FITS 100% INSIDE WHITE FRAME
+   PAGE 0: COVER PAGE (OUR LOVE) - IMAGE FITS 100% INSIDE WHITE FRAME
    ========================================================================= */
 .cover-page-root {
   width: 100%;
   height: 100%;
-  background: linear-gradient(rgba(74, 16, 23, 0.94), rgba(50, 8, 13, 0.96)), url('/images/burgundy-texture.jpg') center/cover;
+  background: linear-gradient(rgba(74, 16, 23, 0.94), rgba(46, 7, 12, 0.96)), url('/images/burgundy-texture.jpg') center/cover;
   padding: clamp(0.75rem, 2.5vw, 1.25rem);
-  border-radius: 6px 12px 12px 6px;
+  border-radius: 8px 14px 14px 8px;
   position: relative;
   box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
   display: flex;
@@ -355,7 +255,7 @@ body {
   text-align: center;
 }
 
-/* Big Romantic Hero Image - FULLY CONTAINED INSIDE WHITE FRAME */
+/* Big Romantic Hero Image - 100% CONTAINED INSIDE WHITE FRAME */
 .cover-photo-frame {
   flex: 1;
   min-height: 0;
@@ -387,10 +287,11 @@ body {
 }
 
 /* =========================================================================
-   2️⃣ SPREAD 1: LEFT PAGE - DOUBLE HEART LOCKET & ROMANTIC ITALIC LETTER
+   PAGE 1: LOCKET & ROMANTIC CORMORANT GARAMOND ITALIC LETTER
    ========================================================================= */
 .spread1-left {
   background: #ffffff;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -400,13 +301,12 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: clamp(0.5rem, 1.8vw, 1.25rem);
+  padding: clamp(0.6rem, 2vw, 1.25rem);
   gap: clamp(0.4rem, 1.2vw, 0.85rem);
   height: 100%;
   min-height: 0;
 }
 
-/* Locket Top Section */
 .locket-section {
   display: flex;
   justify-content: center;
@@ -472,8 +372,8 @@ body {
 }
 
 .heart-metallic-rim {
-  width: clamp(90px, 15vw, 145px);
-  height: clamp(84px, 14vw, 135px);
+  width: clamp(95px, 18vw, 145px);
+  height: clamp(88px, 17vw, 135px);
   background: linear-gradient(135deg, #e6e8eb 0%, #cbd0d8 25%, #f5f6f8 50%, #9ca3af 75%, #ffffff 100%);
   clip-path: path('M 77.5 140 C 20 95, 0 65, 0 35 C 0 15, 15 0, 38 0 C 58 0, 72 15, 77.5 25 C 83 15, 97 0, 117 0 C 140 0, 155 15, 155 35 C 155 65, 135 95, 77.5 140 Z');
   padding: 4px;
@@ -526,7 +426,7 @@ body {
   border-radius: 2px;
 }
 
-/* Bottom: Love Letter Card (Chic Velvet Burgundy & Cormorant Garamond Italic) */
+/* Bottom: Love Letter Card */
 .love-letter-section {
   flex: 1;
   min-height: 0;
@@ -534,9 +434,9 @@ body {
 }
 
 .love-letter-card {
-  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(50, 8, 13, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
+  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(46, 7, 12, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
   color: #ffffff;
-  padding: clamp(0.75rem, 2vw, 1.4rem);
+  padding: clamp(0.75rem, 2.2vw, 1.5rem);
   border-radius: 6px;
   width: 100%;
   height: 100%;
@@ -550,7 +450,7 @@ body {
 
 .letter-heading-script {
   font-family: 'Alex Brush', 'Dancing Script', cursive;
-  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-size: clamp(2rem, 4vw, 3rem);
   color: #ffffff;
   line-height: 1;
   margin-bottom: 0.35rem;
@@ -558,27 +458,28 @@ body {
   flex-shrink: 0;
 }
 
-/* Beautiful Romantic Slanted Italic & Crystal Clear */
+/* Cormorant Garamond Romantic Slanted Italic & Legible */
 .letter-body-text {
   font-family: 'Cormorant Garamond', 'Playfair Display', serif;
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(0.75rem, 1.25vw, 1.05rem);
-  line-height: clamp(1.4, 2vw, 1.75);
+  font-size: clamp(0.8rem, 1.35vw, 1.05rem);
+  line-height: clamp(1.45, 2.2vw, 1.75);
   letter-spacing: 0.3px;
   color: rgba(255, 255, 255, 0.98);
   display: flex;
   flex-direction: column;
-  gap: clamp(0.35rem, 1vw, 0.75rem);
+  gap: clamp(0.4rem, 1.2vw, 0.75rem);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 /* =========================================================================
-   3️⃣ SPREAD 1: RIGHT PAGE - 3x3 PHOTO GRID (IMAGE 3)
+   PAGE 2: 9-PHOTOS GRID (FULL PAGE DISPLAY)
    ========================================================================= */
 .spread1-right {
-  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(50, 8, 13, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
-  padding: clamp(0.6rem, 2vw, 1.5rem);
+  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(46, 7, 12, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
+  padding: clamp(0.75rem, 2.5vw, 1.5rem);
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -596,7 +497,7 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: clamp(3px, 0.8vw, 6px);
+  gap: clamp(4px, 1vw, 8px);
   width: 100%;
   height: 100%;
   max-width: 480px;
@@ -605,10 +506,10 @@ body {
 
 .photo-grid-tile {
   position: relative;
-  border-radius: 2px;
+  border-radius: 3px;
   overflow: hidden;
   background: #111;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.25);
 }
 
 .photo-tile-inner {
@@ -624,98 +525,178 @@ body {
 }
 
 /* =========================================================================
-   4️⃣ SPREAD 2: LEFT PAGE - POSTAGE STAMP MUSIC PLAYER (IMAGE 2)
+   PAGE 3: MODERN BURGUNDY MUSIC PLAYER (INSPIRED BY USER'S REFERENCE)
    ========================================================================= */
-.spread2-left {
-  background: var(--card-cream);
-  padding: clamp(0.75rem, 2.5vw, 2rem);
+.single-page-music-root {
+  width: 100%;
   height: 100%;
+  background: linear-gradient(rgba(45, 9, 14, 0.96), rgba(20, 4, 7, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
+  padding: clamp(0.75rem, 2.5vw, 1.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.music-player-card {
+.modern-music-stage {
   width: 100%;
   max-width: 360px;
-  background: #ffffff;
-  border-radius: 12px;
-  padding: clamp(0.85rem, 2.2vw, 1.8rem);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
-  gap: clamp(0.5rem, 1.5vw, 1.1rem);
+  align-items: center;
+  position: relative;
 }
 
-.stamp-wrapper {
+/* Vinyl Record Peeking from Top */
+.vinyl-record-peek {
+  width: clamp(140px, 32vw, 180px);
+  height: clamp(140px, 32vw, 180px);
+  border-radius: 50%;
+  background: repeating-radial-gradient(
+    circle at center,
+    #181818 0px,
+    #181818 2px,
+    #252525 3px,
+    #111111 4px
+  );
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
   display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: -70px;
+  z-index: 2;
+  transition: transform 0.4s ease;
+}
+
+.vinyl-record-peek.is-spinning {
+  animation: vinylSpin 3.5s linear infinite;
+}
+
+@keyframes vinylSpin {
+  100% { transform: rotate(360deg); }
+}
+
+.vinyl-inner-label {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--burgundy-accent);
+  border: 3px solid #ffffff;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-.postage-stamp-border {
-  background: var(--burgundy-velvet);
-  padding: clamp(6px, 1.2vw, 10px);
-  border-radius: 4px;
-  box-shadow: 0 8px 20px rgba(74, 16, 23, 0.3);
-  background-image: 
-    radial-gradient(circle at 0 0, transparent 4px, var(--burgundy-velvet) 5px),
-    radial-gradient(circle at 100% 0, transparent 4px, var(--burgundy-velvet) 5px),
-    radial-gradient(circle at 100% 100%, transparent 4px, var(--burgundy-velvet) 5px),
-    radial-gradient(circle at 0 100%, transparent 4px, var(--burgundy-velvet) 5px);
-}
-
-.stamp-inner-artwork {
-  width: clamp(100px, 18vw, 200px);
-  height: clamp(100px, 18vw, 200px);
-  overflow: hidden;
-  border-radius: 2px;
+.vinyl-center-hole {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
   background: #000;
 }
 
-.stamp-photo {
+/* Modern Player Card Container */
+.modern-player-card {
+  width: 100%;
+  background: rgba(35, 7, 11, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 20px;
+  padding: clamp(1rem, 2.5vw, 1.6rem);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.5rem, 1.5vw, 0.9rem);
+  z-index: 5;
+  position: relative;
+}
+
+/* Album Artwork Box */
+.album-artwork-box {
+  width: 100%;
+  aspect-ratio: 1.1 / 1;
+  background: #fbf8f3;
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.arched-love-banner {
+  position: absolute;
+  top: 6px;
+  width: 90%;
+  height: 50px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.arched-svg-text {
+  width: 100%;
+  height: 100%;
+}
+
+.arched-text-label {
+  font-family: 'Cinzel', 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 800;
+  fill: var(--burgundy-velvet);
+  letter-spacing: 2px;
+}
+
+.tilted-album-photo-frame {
+  width: 70%;
+  aspect-ratio: 1 / 1;
+  transform: rotate(-7deg);
+  border: 5px solid #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #111;
+  margin-top: 18px;
+}
+
+.tilted-album-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.track-info-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* Track Header */
+.modern-track-header {
+  text-align: left;
 }
 
-.track-title {
+.modern-song-title {
   font-family: 'Montserrat', sans-serif;
-  font-size: clamp(0.75rem, 1.5vw, 1.1rem);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
   font-weight: 700;
-  color: #111827;
+  color: #ffffff;
 }
 
-.track-artist {
-  font-size: clamp(0.6rem, 1.1vw, 0.8rem);
-  color: #6b7280;
+.modern-song-subtitle {
+  font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+  color: rgba(255, 255, 255, 0.65);
   font-weight: 400;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
-.heart-like-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
+/* Progress Input & Timestamps */
+.modern-progress-box {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
 }
 
-.audio-progress-section {
+.timeline-input-wrap {
   width: 100%;
 }
 
-.progress-bar-container {
-  width: 100%;
-}
-
-.progress-range-input {
+.modern-range-input {
   width: 100%;
   height: 4px;
   -webkit-appearance: none;
@@ -725,60 +706,102 @@ body {
   cursor: pointer;
 }
 
-.progress-range-input::-webkit-slider-thumb {
+.modern-range-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--burgundy-velvet);
+  background: #ff5268;
   cursor: pointer;
+  box-shadow: 0 0 8px rgba(255, 82, 104, 0.7);
 }
 
-.player-controls-row {
+.timeline-labels-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Controls */
+.modern-controls-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 0.3rem;
+  justify-content: center;
+  gap: clamp(1rem, 3.5vw, 2rem);
+  padding: 0.2rem 0;
 }
 
-.ctrl-btn {
+.modern-ctrl-btn {
   background: none;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.secondary-btn {
-  color: #4b5563;
-  padding: 4px;
-}
-
-.secondary-btn.active-ctrl {
-  color: var(--burgundy-velvet);
-}
-
-.main-play-btn {
-  width: clamp(34px, 5.5vw, 46px);
-  height: clamp(34px, 5.5vw, 46px);
-  border-radius: 50%;
-  background: var(--burgundy-velvet);
-  color: #ffffff;
-  box-shadow: 0 6px 16px rgba(74, 16, 23, 0.4);
+  padding: 6px;
   transition: transform 0.15s ease;
 }
 
-.main-play-btn:hover {
+.modern-ctrl-btn:hover {
+  transform: scale(1.15);
+}
+
+.modern-main-play-btn {
+  width: clamp(44px, 8vw, 54px);
+  height: clamp(44px, 8vw, 54px);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #b32638 0%, #851221 100%);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 0 22px rgba(179, 38, 56, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modern-main-play-btn:hover {
   transform: scale(1.08);
+  box-shadow: 0 0 28px rgba(179, 38, 56, 0.85);
+}
+
+/* Volume Row */
+.modern-volume-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.2rem;
+}
+
+.volume-slider-input {
+  flex: 1;
+  height: 3px;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 9999px;
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+  cursor: pointer;
 }
 
 /* =========================================================================
-   5️⃣ SPREAD 2: RIGHT PAGE - LOVE LOVE LOVE & POLAROIDS (IMAGE 1)
+   PAGE 4: LOVE LOVE LOVE & POLAROIDS (FULL PAGE)
    ========================================================================= */
 .spread2-right {
-  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(50, 8, 13, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
-  padding: clamp(0.5rem, 1.8vw, 1.5rem);
+  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(46, 7, 12, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
+  padding: clamp(0.75rem, 2.5vw, 1.5rem);
+  width: 100%;
   height: 100%;
   position: relative;
   overflow: hidden;
@@ -810,8 +833,8 @@ body {
 .love-word-line {
   font-family: 'Cinzel', 'Playfair Display', serif;
   font-weight: 900;
-  font-size: clamp(2.4rem, 6.8vw, 5.8rem);
-  letter-spacing: clamp(4px, 1.2vw, 12px);
+  font-size: clamp(3.2rem, 9vw, 6.2rem);
+  letter-spacing: clamp(6px, 1.8vw, 14px);
   color: #ffffff;
   line-height: 0.9;
   text-transform: uppercase;
@@ -832,7 +855,7 @@ body {
 
 .cursive-text {
   font-family: 'Alex Brush', 'Dancing Script', cursive;
-  font-size: clamp(1.8rem, 4.5vw, 3.8rem);
+  font-size: clamp(2.4rem, 6vw, 4.4rem);
   color: var(--gold-script);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
@@ -846,10 +869,10 @@ body {
 .polaroid-card {
   position: absolute;
   background: #ffffff;
-  padding: clamp(5px, 1vw, 9px) clamp(5px, 1vw, 9px) clamp(12px, 2.5vw, 24px) clamp(5px, 1vw, 9px);
+  padding: 8px 8px 22px 8px;
   border-radius: 2px;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
-  width: min(170px, 35%);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  width: min(160px, 35%);
   pointer-events: auto;
 }
 
@@ -868,17 +891,17 @@ body {
 }
 
 /* =========================================================================
-   6️⃣ SPREAD 3: BACK COVER - YOU ARE LOVED CARD (IMAGE 6)
+   PAGE 5: YOU ARE LOVED (MATCHING IMAGE 6)
    ========================================================================= */
 .back-cover-spread {
-  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(50, 8, 13, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
-  padding: clamp(1rem, 2.5vw, 2rem);
+  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(46, 7, 12, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
+  padding: clamp(1rem, 3vw, 2rem);
+  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.5);
-  border-radius: 6px 12px 12px 6px;
 }
 
 .scallop-card-wrapper {
@@ -956,7 +979,7 @@ body {
 .script-line-1,
 .script-line-2 {
   font-family: 'Alex Brush', 'Dancing Script', cursive;
-  font-size: clamp(2.8rem, 6vw, 4.4rem);
+  font-size: clamp(3rem, 7vw, 4.6rem);
   color: #ffffff;
   font-weight: 400;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
@@ -964,7 +987,7 @@ body {
 
 .scallop-sub-poem {
   font-family: 'Montserrat', serif;
-  font-size: clamp(0.55rem, 1vw, 0.72rem);
+  font-size: clamp(0.6rem, 1.2vw, 0.74rem);
   letter-spacing: 2px;
   line-height: 1.8;
   color: rgba(255, 255, 255, 0.9);
@@ -974,27 +997,36 @@ body {
 }
 
 /* =========================================================================
-   RESPONSIVE DESIGN (ALWAYS MAINTAINING 2 FACING PAGES BOOK EXPERIENCE)
+   BOTTOM PAGE INDICATOR DOTS
    ========================================================================= */
-@media (max-width: 768px) {
-  .book-stage-viewport {
-    padding: 0.4rem;
-  }
+.page-indicator-dots {
+  position: absolute;
+  bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 40;
+}
 
-  .book-object.book-closed {
-    width: 86vw;
-  }
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  padding: 0;
+}
 
-  .book-object.book-open {
-    width: 98vw;
-    /* Maintain 2 facing pages side-by-side on mobile! */
-  }
+.indicator-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
+}
 
-  .book-center-spine {
-    width: 12px;
-  }
-
-  .cover-photo-matting {
-    border-width: 5px;
-  }
+.indicator-dot.active-dot {
+  width: 22px;
+  border-radius: 9999px;
+  background: var(--burgundy-glow);
+  box-shadow: 0 0 10px rgba(158, 31, 48, 0.8);
 }
