@@ -4,46 +4,43 @@
  * =========================================================================
  * جميع الصور موجودة داخل مجلد: public/images/
  * ملف الأغنية موجود داخل مجلد: public/audio/
- * يمكنك استبدال أي صورة أو نص مباشرة من هنا.
  */
 
 export const bookContent = {
-  // ألوان الثيم (برجاندي دافئ أنيق وداكن + أبيض كريمي)
+  // ألوان الثيم (برجاندي مخملي فاخر وداكن مطابق للصورة + أبيض نقي)
   theme: {
-    burgundy: "#5c0b14",        // برجاندي داكن دافئ وراقي
-    burgundyDark: "#43050b",    // للظلال والعمق
+    burgundy: "#4a1017",        // لون البرجاندي المخملي المأخوذ من صورتك
+    burgundyDark: "#33090e",    // درجات الظلال العميقة
+    burgundyAccent: "#5c151e",  // درجات اللمسات الدافئة
     goldScript: "#e29b62",      // اللون الذهبي للكلمات المتداخلة
-    creamCard: "#f7f2e8",       // لون كارت الصفحة الأخيرة
+    creamCard: "#fbf8f3",       // لون الورق والكروت العاجية
     white: "#ffffff",
   },
 
-  // 1️⃣ صفحة الغلاف (Cover Page)
+  // 1️⃣ صفحة الغلاف (Cover Page - OUR LOVE)
   cover: {
-    // صورة الغلاف بالكامل (تناسب التصميم المعطى بدقة 100% بدون أي قص):
-    fullCoverImage: "/images/cover.jpg",
-
-    // أو يمكنك تفريغ fullCoverImage واستخدام التصميم البرمجي مع نصوص مخصصة وصورة الكابلز:
     title: "OUR LOVE",
     subtitle: "MI LUGAR FAVORITO",
     columns: [
       {
         title: "HISTORIA",
-        desc: "Un conjunto de momentos, desde lo más simple hasta los más mágicos."
+        desc: "Un conjunto de momentos, desde lo más simple hasta los más mágicos, y cada día que pasa solo lo hace más especial."
       },
       {
         title: "MEMORIES",
-        desc: "Fotos espontáneas, miradas llenas de amor y esos momentos que hoy significan todo."
+        desc: "Fotos espontáneas, miradas llenas de amor y esos momentos que aunque parezcan pequeños en la memoria, hoy significan todo."
       },
       {
         title: "WISHLIST",
-        desc: "Un recordatorio de todo lo que nos espera y nos ilumina."
+        desc: "Un recordatorio de todo lo que nos espera, de las experiencias que nos iluminan y de los rincones que aún nos faltan visitar."
       },
       {
         title: "PLANEADOR",
-        desc: "Una oportunidad para seguir sumando locura y abrazos."
+        desc: "Una oportunidad para seguir sumando locura, abrazos y recuerdos que nos hagan sonreír con solo recordarlos."
       }
     ],
-    image: "/images/cover.jpg",
+    // صورة الغلاف توضع كاملة داخل الإطار الأبيض بدون أي قص
+    image: "/images/Couple (2).jpg",
   },
 
   // 2️⃣ التقليبة الأولى (Spread 1)

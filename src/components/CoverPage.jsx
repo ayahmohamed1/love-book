@@ -2,46 +2,22 @@ import React from 'react';
 
 export function CoverPage({ data, onOpenBook }) {
   const {
-    fullCoverImage,
     image,
     title = "OUR LOVE",
     subtitle = "MI LUGAR FAVORITO",
     columns = []
   } = data || {};
 
-  // إذا تم تحديد صورة كاملة للغلاف (سواء fullCoverImage أو image كغلاف متكامل)
-  const isFullImageCover = fullCoverImage || (image && !columns?.length);
-
-  if (isFullImageCover) {
-    return (
-      <div
-        className="cover-page-root cover-as-full-image"
-        onClick={onOpenBook}
-        role="button"
-        tabIndex={0}
-      >
-        <div className="cover-full-image-frame">
-          <img
-            src={fullCoverImage || image}
-            alt="Book Cover"
-            className="cover-full-img"
-            loading="eager"
-          />
-        </div>
-      </div>
-    );
-  }
-
-  // في حال استخدام تصميم الكود بالكامل (مع إعطاء الصورة الحجم والمساحة الكاملة الكافية)
   return (
     <div
-      className="cover-page-root cover-code-layout"
+      className="cover-page-root"
       onClick={onOpenBook}
       role="button"
       tabIndex={0}
+      title="انقر لفتح الكتاب"
     >
       <div className="cover-inner-border">
-        {/* Header Title Section - Compact & Elegant */}
+        {/* Header Title Section */}
         <header className="cover-header">
           <h1 className="cover-main-title">{title}</h1>
           <div className="cover-subtitle-wrapper">
@@ -50,7 +26,7 @@ export function CoverPage({ data, onOpenBook }) {
           </div>
         </header>
 
-        {/* 4 Metadata Columns - Ultra Slim & Proportional */}
+        {/* 4 Metadata Columns (HISTORIA, MEMORIES, WISHLIST, PLANEADOR) */}
         {columns && columns.length > 0 && (
           <section className="cover-meta-grid" aria-label="Book sections">
             {columns.map((col, idx) => (
@@ -62,7 +38,7 @@ export function CoverPage({ data, onOpenBook }) {
           </section>
         )}
 
-        {/* Big Romantic Hero Image - Takes full remaining space */}
+        {/* Big Romantic Hero Image - 100% Contained & Framed */}
         <div className="cover-photo-frame">
           <div className="cover-photo-matting">
             <img
