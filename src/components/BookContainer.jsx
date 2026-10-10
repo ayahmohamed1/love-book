@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight, ArrowLeft } from 'lucide-react';
 import CoverPage from './CoverPage';
 import Spread1Left from './Spread1Left';
 import Spread1Right from './Spread1Right';
@@ -103,11 +103,11 @@ export function BookContainer({ content }) {
   // Click on page: left side flips back, right side flips forward
   const handlePageClick = (e) => {
     if (['BUTTON', 'INPUT', 'A'].includes(e.target.tagName)) return;
-    // Don't flip if clicking inside music card, chic button, or photo lightbox
+    // Don't flip if clicking inside music card, photo lightbox, or cute arrow buttons
     if (
       e.target.closest('.compact-music-card') ||
       e.target.closest('.lightbox-content') ||
-      e.target.closest('.chic-flip-indicator')
+      e.target.closest('.cute-page-arrow-btn')
     ) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
@@ -232,7 +232,7 @@ export function BookContainer({ content }) {
                   <div className="leaf-shading-glare front-glare"></div>
                 </div>
 
-                {/* Back face of leaf: luxury burgundy scrapbook texture with black/silver crest */}
+                {/* Back face of leaf: luxury burgundy scrapbook texture with black crest */}
                 <div className="leaf-face leaf-face-back">
                   <div className="scrapbook-page-back-canvas">
                     <div className="back-damask-motif">
@@ -249,35 +249,33 @@ export function BookContainer({ content }) {
             {/* Inner Gutter Shadow (ثنية الكتاب الداخلية) */}
             <div className="book-inner-gutter-shadow"></div>
 
-            {/* Chic Minimalist Page Turn Hint (أنيق ومودرن جداً وبدون أي جزء شفاف يغطي الصور) */}
-            {currentPage < totalPages - 1 && !isFlipping && (
-              <div
-                className={`chic-flip-indicator next-indicator ${currentPage === 0 ? 'is-cover-badge' : ''}`}
+            {/* Cute Minimalist Arrows (شبه سهم صفحة القطة، مدورة وكيوت وبدون أي كتابة) */}
+            {currentPage < totalPages - 1 && currentPage !== 1 && !isFlipping && (
+              <button
+                className={`cute-page-arrow-btn next-arrow-btn ${currentPage === 0 ? 'cover-arrow' : ''}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   flipForward();
                 }}
-                title={currentPage === 0 ? "افتح الكتاب" : "الصفحة التالية"}
+                title="Next"
+                aria-label="Next page"
               >
-                <span className="chic-indicator-text">
-                  {currentPage === 0 ? "OPEN" : "FLIP"}
-                </span>
-                <span className="chic-indicator-arrow">→</span>
-              </div>
+                <ArrowRight className="w-5 h-5 text-white" />
+              </button>
             )}
 
             {currentPage > 0 && !isFlipping && (
-              <div
-                className="chic-flip-indicator prev-indicator"
+              <button
+                className="cute-page-arrow-btn prev-arrow-btn"
                 onClick={(e) => {
                   e.stopPropagation();
                   flipBackward();
                 }}
-                title="الصفحة السابقة"
+                title="Previous"
+                aria-label="Previous page"
               >
-                <span className="chic-indicator-arrow">←</span>
-                <span className="chic-indicator-text">BACK</span>
-              </div>
+                <ArrowLeft className="w-5 h-5 text-white" />
+              </button>
             )}
           </div>
 
