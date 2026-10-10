@@ -1,15 +1,36 @@
 import React from 'react';
 
 export function BackCover({ data }) {
-  const { title = "You are", titleSecondLine = "loved.", subtitle = "In every whispered breeze and every star above." } = data || {};
+  const {
+    image,
+    title = "You are",
+    titleSecondLine = "loved.",
+    subtitle = "In every whispered breeze and every star above."
+  } = data || {};
 
+  // إذا تم توفير صورة الكارت الجاهزة، يتم عرضها مباشرة بكامل أناقتها
+  if (image) {
+    return (
+      <div className="spread-page back-cover-spread">
+        <div className="scallop-card-wrapper">
+          <div className="scallop-card image-card-view">
+            <img
+              src={image}
+              alt="You are loved"
+              className="back-cover-full-img"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // أو التصميم البرمجي
   return (
     <div className="spread-page back-cover-spread">
-      {/* Outer Card with subtle cream paper texture & shadow */}
       <div className="scallop-card-wrapper">
         <div className="scallop-card">
-          
-          {/* Inner Scalloped Frame (Wavy Edge Burgundy Container) */}
           <div className="scallop-inner-frame">
             <svg
               className="scallop-svg-border"
@@ -17,7 +38,6 @@ export function BackCover({ data }) {
               preserveAspectRatio="none"
               fill="#5c0b14"
             >
-              {/* High precision symmetrical scalloped wavy path */}
               <path d="
                 M 35 15
                 Q 50 8, 65 15 Q 80 8, 95 15 Q 110 8, 125 15 Q 140 8, 155 15 Q 170 8, 185 15 Q 200 8, 215 15 Q 230 8, 245 15 Q 260 8, 275 15 Q 290 8, 305 25
@@ -28,7 +48,6 @@ export function BackCover({ data }) {
               " />
             </svg>
 
-            {/* Inner Content */}
             <div className="scallop-card-content">
               <div className="you-are-loved-heading">
                 <span className="script-line-1">{title}</span>
@@ -40,7 +59,6 @@ export function BackCover({ data }) {
               </p>
             </div>
           </div>
-
         </div>
       </div>
     </div>

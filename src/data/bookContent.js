@@ -12,35 +12,37 @@ export const bookContent = {
   theme: {
     burgundy: "#5c0b14",        // برجاندي داكن دافئ وراقي
     burgundyDark: "#43050b",    // للظلال والعمق
-    burgundyAccent: "#78121d",  // لمسات إضافية
     goldScript: "#e29b62",      // اللون الذهبي للكلمات المتداخلة
-    creamCard: "#f7f2e8",       // لون كارت الصفحة الأخيرة وطابع الأغنية
+    creamCard: "#f7f2e8",       // لون كارت الصفحة الأخيرة
     white: "#ffffff",
   },
 
-  // 1️⃣ صفحة الغلاف (Cover Page - OUR LOVE)
+  // 1️⃣ صفحة الغلاف (Cover Page)
   cover: {
+    // صورة الغلاف بالكامل (تناسب التصميم المعطى بدقة 100% بدون أي قص):
+    fullCoverImage: "/images/cover.jpg",
+
+    // أو يمكنك تفريغ fullCoverImage واستخدام التصميم البرمجي مع نصوص مخصصة وصورة الكابلز:
     title: "OUR LOVE",
     subtitle: "MI LUGAR FAVORITO",
     columns: [
       {
         title: "HISTORIA",
-        desc: "Un conjunto de momentos, desde lo más simple hasta los más mágicos, y cada día que pasa solo lo hace más especial."
+        desc: "Un conjunto de momentos, desde lo más simple hasta los más mágicos."
       },
       {
         title: "MEMORIES",
-        desc: "Fotos espontáneas, miradas llenas de amor y esos momentos que aunque parezcan pequeños en la memoria, hoy significan todo."
+        desc: "Fotos espontáneas, miradas llenas de amor y esos momentos que hoy significan todo."
       },
       {
         title: "WISHLIST",
-        desc: "Un recordatorio de todo lo que nos espera, de las experiencias que nos iluminan y de los rincones que aún nos faltan visitar."
+        desc: "Un recordatorio de todo lo que nos espera y nos ilumina."
       },
       {
         title: "PLANEADOR",
-        desc: "Una oportunidad para seguir sumando locura, abrazos y recuerdos que nos hagan sonreír con solo recordarlos."
+        desc: "Una oportunidad para seguir sumando locura y abrazos."
       }
     ],
-    // صورة الغلاف من مجلد public/images/
     image: "/images/cover.jpg",
   },
 
@@ -51,7 +53,6 @@ export const bookContent = {
       locket: {
         titleLeft: "My",
         titleRight: "Love",
-        // صور القلبين من مجلد public/images/
         leftHeartImage: "/images/locket-left.jpg",
         rightHeartImage: "/images/locket-right.jpg",
       },
@@ -82,14 +83,12 @@ export const bookContent = {
 
   // 3️⃣ التقليبة الثانية (Spread 2)
   spread2: {
-    // الصفحة اليسرى: مشغل الأغنية بطابع الطابع البريدي الأنيق
+    // الصفحة اليسرى: مشغل الأغنية بطابع الطابع البريدي
     leftPage: {
       song: {
         title: "Por primera vez",
         artist: "Camilo y Evaluna Montaner",
-        // صورة الطابع البريدي من مجلد public/images/
         stampImage: "/images/song-cover.jpg",
-        // ملف الصوت من مجلد public/audio/
         audioUrl: "/audio/song.mp3",
       }
     },
@@ -123,6 +122,7 @@ export const bookContent = {
 
   // 4️⃣ الصفحة الختامية (Back Page - You are loved)
   backPage: {
+    image: "/images/back-cover.jpg",
     title: "You are",
     titleSecondLine: "loved.",
     subtitle: "In every whispered breeze and\nevery star above.",
