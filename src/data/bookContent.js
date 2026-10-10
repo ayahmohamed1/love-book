@@ -18,7 +18,7 @@ export const bookContent = {
 
   // 1️⃣ صفحة الغلاف (Cover Page - OUR LOVE)
   cover: {
-    title: "OUR LOVE",
+    title: "LOVE STORY",
     subtitle: "BOOK OF US ",
     columns: [
       {
@@ -46,7 +46,7 @@ export const bookContent = {
   messagePage: {
     // صورة القطة بالأعلى (يمكن استبدالها بأي صورة تختارها)
     topImage: "/images/cat.jpg",
-    title: "Happy Birthday, my love.",
+    title: "i love you, my love.",
     message: "Being with you is truly one of the best things that has ever happened to me. From the moment you came into my life, everything started to feel brighter and more meaningful..."
   },
 

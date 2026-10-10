@@ -743,8 +743,9 @@ body {
   aspect-ratio: 1 / 1;
   border-radius: 18px;
   overflow: hidden;
-  background: #ffffff;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  background: radial-gradient(circle at 50% 45%, #661722 0%, #4a1017 65%, #240306 100%);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
