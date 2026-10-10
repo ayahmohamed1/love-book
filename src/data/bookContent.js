@@ -52,7 +52,7 @@ export const bookContent = {
 
   // 3️⃣ الصفحة 2: صفحة الـ 6 صور (Memories 2x3 Grid)
   memoriesPage: {
-    title: "tap a memory to reveal",
+    title: "our memories",
     // مصفوفة الـ 6 صور (كل 2 بجانب بعض)
     photos: [
       { id: 1, url: "/images/grid-1.jpg" },
