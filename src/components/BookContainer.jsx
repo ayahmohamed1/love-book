@@ -16,24 +16,57 @@ export function BookContainer({ content }) {
   // 3: Modern Burgundy Music Player
   // 4: LOVE LOVE LOVE Typography & Polaroids
   // 5: Lace Heart Final Photo
+  const totalPages = 6;
   const [currentPage, setCurrentPage] = useState(0);
+  const [targetPage, setTargetPage] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
   const [flipDir, setFlipDir] = useState('forward');
 
-  const totalPages = 6;
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
 
+  const pageNames = [
+    { title: "Cover", label: "OUR LOVE" },
+    { title: "Message", label: "Message" },
+    { title: "Memories", label: "Memories" },
+    { title: "Song", label: "Our Song" },
+    { title: "Love", label: "Love" },
+    { title: "Heart", label: "Forever" }
+  ];
+
+  const renderPage = useCallback((pageIndex) => {
+    switch (pageIndex) {
+      case 0:
+        return <CoverPage data={content.cover} onOpenBook={() => flipTo(1, 'forward')} />;
+      case 1:
+        return <Spread1Left data={content.messagePage} onNext={() => flipTo(2, 'forward')} />;
+      case 2:
+        return <Spread1Right data={content.memoriesPage} />;
+      case 3:
+        return <Spread2Left data={content.musicPage} />;
+      case 4:
+        return <Spread2Right data={content.lovePage} />;
+      case 5:
+        return <BackCover data={content.backPage} />;
+      default:
+        return null;
+    }
+  }, [content]);
+
   const flipTo = useCallback((target, dir) => {
     if (isFlipping || target === currentPage || target < 0 || target >= totalPages) return;
+    
+    const direction = dir || (target > currentPage ? 'forward' : 'backward');
     setIsFlipping(true);
-    setFlipDir(dir);
+    setFlipDir(direction);
+    setTargetPage(target);
     sounds.playPageFlip();
 
+    // 600ms realistic 3D book leaf curl animation
     setTimeout(() => {
       setCurrentPage(target);
       setIsFlipping(false);
-    }, 380);
+    }, 600);
   }, [currentPage, isFlipping, totalPages]);
 
   const flipForward = useCallback(() => {
@@ -48,7 +81,7 @@ export function BookContainer({ content }) {
     }
   }, [currentPage, flipTo]);
 
-  // Touch Swipe Handlers for 100% reliable mobile flipping
+  // Touch Swipe Handlers for mobile
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
@@ -58,13 +91,10 @@ export function BookContainer({ content }) {
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
 
-    // Only trigger if horizontal swipe is greater than vertical movement
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
       if (deltaX < 0) {
-        // Swiped Left -> Go Forward
         flipForward();
       } else {
-        // Swiped Right -> Go Backward
         flipBackward();
       }
     }
@@ -72,9 +102,10 @@ export function BookContainer({ content }) {
 
   // Click on page: left side flips back, right side flips forward
   const handlePageClick = (e) => {
-    // If the click is on an interactive input, slider, or button, ignore
     if (['BUTTON', 'INPUT', 'A'].includes(e.target.tagName)) return;
-    
+    // Don't flip if clicking inside music card or photo lightbox
+    if (e.target.closest('.compact-music-card') || e.target.closest('.lightbox-content')) return;
+
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     if (clickX < rect.width * 0.32) {
@@ -97,77 +128,151 @@ export function BookContainer({ content }) {
     return () => window.removeEventListener('keydown', handleKey);
   }, [flipForward, flipBackward]);
 
+  // Active page displayed underneath during flip
+  const underlyingPageIndex = isFlipping
+    ? (flipDir === 'forward' ? targetPage : currentPage)
+    : currentPage;
+
+  // Page leaf being rotated in 3D during flip
+  const flippingPageIndex = isFlipping
+    ? (flipDir === 'forward' ? currentPage : targetPage)
+    : null;
+
   return (
     <div
       className="book-stage-viewport"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* 3D Single-Page Hardcover Book */}
-      <div
-        className={`single-book-card ${isFlipping ? `is-turning-${flipDir}` : ''}`}
-        onClick={handlePageClick}
-      >
-        {/* Left Hardcover Spine Depth */}
-        <div className="hardcover-spine-edge"></div>
+      {/* 3D Physical Scrapbook Container */}
+      <div className="book-3d-scene">
+        
+        {/* Hardcover Base Backplate (الغلاف الصلب الخارجي يبرز بوضوح حول الصفحات) */}
+        <div className="hardcover-book-base">
+          
+          {/* Vintage Ornate Brass Corner Protectors on Hardcover */}
+          <div className="cover-corner-bracket top-left"></div>
+          <div className="cover-corner-bracket top-right"></div>
+          <div className="cover-corner-bracket bottom-left"></div>
+          <div className="cover-corner-bracket bottom-right"></div>
 
-        {/* Dynamic Page Content */}
-        <div className="single-page-content-wrapper">
-          {currentPage === 0 && (
-            <CoverPage
-              data={content.cover}
-              onOpenBook={flipForward}
-            />
-          )}
+          {/* Hardcover Spine Column with 3D Depth & Stitched Hinges */}
+          <div className="hardcover-spine-column">
+            <div className="spine-fold-shadow"></div>
+            <div className="spine-embossed-ridge ridge-1"></div>
+            <div className="spine-embossed-ridge ridge-2"></div>
+            <div className="spine-embossed-ridge ridge-3"></div>
+            <div className="spine-gold-stitch"></div>
+          </div>
 
-          {currentPage === 1 && (
-            <Spread1Left
-              data={content.messagePage}
-              onNext={flipForward}
-            />
-          )}
+          {/* Left Stacked Pages (الورق المقلوب المتجمع على الشمال) */}
+          <div className="staggered-pages-stack-left">
+            {currentPage > 0 && (
+              <div
+                className="staggered-leaf-edge left-leaf-1"
+                onClick={(e) => { e.stopPropagation(); flipBackward(); }}
+                title="الصفحة السابقة"
+              />
+            )}
+            {currentPage > 1 && (
+              <div
+                className="staggered-leaf-edge left-leaf-2"
+                onClick={(e) => { e.stopPropagation(); flipTo(currentPage - 2, 'backward'); }}
+              />
+            )}
+          </div>
 
-          {currentPage === 2 && (
-            <Spread1Right data={content.memoriesPage} />
-          )}
+          {/* The Inner Book Pages Deck */}
+          <div
+            className="book-pages-deck"
+            onClick={handlePageClick}
+          >
+            {/* The Underlying Active Page Layer */}
+            <div className="book-page-layer underlying-layer">
+              {renderPage(underlyingPageIndex)}
+              {isFlipping && <div className="underlying-page-shadow"></div>}
+            </div>
 
-          {currentPage === 3 && (
-            <Spread2Left data={content.musicPage} />
-          )}
+            {/* Right Stacked Pages (صفحات الكتاب المتتالية المرصوصة خلف الصفحة زي الصورة المرجعية) */}
+            <div className="staggered-pages-stack-right">
+              {Array.from({ length: totalPages - 1 - currentPage }).map((_, idx) => {
+                const pIdx = currentPage + 1 + idx;
+                const tabWidth = 14 + (idx + 1) * 9;
+                return (
+                  <div
+                    key={pIdx}
+                    className={`staggered-leaf-tab tab-step-${idx + 1}`}
+                    style={{
+                      width: `${tabWidth}px`,
+                      zIndex: 10 - idx,
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      flipTo(pIdx, 'forward');
+                    }}
+                    title={`انتقل إلى: ${pageNames[pIdx]?.label || `صفحة ${pIdx + 1}`}`}
+                  >
+                    <span className="tab-vertical-hint">{pageNames[pIdx]?.title}</span>
+                    <div className="tab-gilded-edge"></div>
+                  </div>
+                );
+              })}
+            </div>
 
-          {currentPage === 4 && (
-            <Spread2Right data={content.lovePage} />
-          )}
+            {/* The 3D Flipping Leaf (حركة قلبة صفحة الكتاب الحقيقية ثلاثية الأبعاد) */}
+            {isFlipping && flippingPageIndex !== null && (
+              <div className={`book-flipping-leaf leaf-turn-${flipDir}`}>
+                {/* Front face of leaf: outgoing page */}
+                <div className="leaf-face leaf-face-front">
+                  {renderPage(flippingPageIndex)}
+                  <div className="leaf-shading-glare front-glare"></div>
+                </div>
 
-          {currentPage === 5 && (
-            <BackCover data={content.backPage} />
-          )}
+                {/* Back face of leaf: luxury burgundy scrapbook texture with gold crest */}
+                <div className="leaf-face leaf-face-back">
+                  <div className="scrapbook-page-back-canvas">
+                    <div className="back-damask-motif">
+                      <div className="back-heart-crest">❦</div>
+                      <div className="back-gold-rule"></div>
+                      <span className="back-book-title">BOOK OF US</span>
+                    </div>
+                  </div>
+                  <div className="leaf-shading-glare back-glare"></div>
+                </div>
+              </div>
+            )}
+
+            {/* Inner Gutter Shadow (ثنية الكتاب الداخلية) */}
+            <div className="book-inner-gutter-shadow"></div>
+
+            {/* Corner Curl Peek Indicators */}
+            {currentPage < totalPages - 1 && !isFlipping && (
+              <div className="corner-curl-peek next-curl" title="الصفحة التالية"></div>
+            )}
+            {currentPage > 0 && !isFlipping && (
+              <div className="corner-curl-peek prev-curl" title="الصفحة السابقة"></div>
+            )}
+          </div>
+
+          {/* Hardcover Outer Overhang Board Rims (بروز أطراف الغلاف) */}
+          <div className="hardcover-overhang-rim top-rim"></div>
+          <div className="hardcover-overhang-rim bottom-rim"></div>
+          <div className="hardcover-overhang-rim right-rim"></div>
         </div>
 
-        {/* Realistic Page Flip Shadow Layer */}
-        {isFlipping && <div className={`page-flip-curl-shadow ${flipDir}`}></div>}
-
-        {/* Subtle Corner Hints */}
-        {currentPage < totalPages - 1 && (
-          <div className="page-curl-corner-hint next-hint"></div>
-        )}
-        {currentPage > 0 && (
-          <div className="page-curl-corner-hint prev-hint"></div>
-        )}
-
-        {/* Floor Ambient Shadow */}
-        <div className="book-floor-shadow"></div>
+        {/* 3D Realistic Contact Floor Shadow */}
+        <div className="book-scene-floor-shadow"></div>
       </div>
 
-      {/* Floating Bottom Navigation (Guarantees every page flips effortlessly on mobile & desktop) */}
+      {/* Floating Bottom Navigation */}
       <nav className="floating-bottom-book-nav" aria-label="Book navigation">
         <button
-          className={`nav-bar-btn ${currentPage === 0 ? 'nav-disabled' : ''}`}
+          className={`nav-bar-btn ${currentPage === 0 || isFlipping ? 'nav-disabled' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
             flipBackward();
           }}
-          disabled={currentPage === 0}
+          disabled={currentPage === 0 || isFlipping}
           title="الصفحة السابقة"
           aria-label="Previous page"
         >
@@ -191,12 +296,12 @@ export function BookContainer({ content }) {
         </div>
 
         <button
-          className={`nav-bar-btn ${currentPage === totalPages - 1 ? 'nav-disabled' : ''}`}
+          className={`nav-bar-btn ${currentPage === totalPages - 1 || isFlipping ? 'nav-disabled' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
             flipForward();
           }}
-          disabled={currentPage === totalPages - 1}
+          disabled={currentPage === totalPages - 1 || isFlipping}
           title="الصفحة التالية"
           aria-label="Next page"
         >

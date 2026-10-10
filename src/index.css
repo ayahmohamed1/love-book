@@ -44,7 +44,7 @@ body {
 }
 
 /* =========================================================================
-   VIEWPORT & SINGLE-PAGE 3D BOOK
+   VIEWPORT & PHYSICAL 3D SCRAPBOOK
    ========================================================================= */
 .book-stage-viewport {
   width: 100%;
@@ -54,128 +54,484 @@ body {
   align-items: center;
   justify-content: center;
   perspective: 2500px;
-  padding: 1rem 0.5rem 4rem;
+  padding: 1rem 0.5rem 3.8rem;
   position: relative;
+  overflow: hidden;
 }
 
-.single-book-card {
-  width: min(520px, 92vw);
-  max-height: 84vh;
-  aspect-ratio: 438 / 579;
+/* 3D Scene Wrapper */
+.book-3d-scene {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transform-style: preserve-3d;
-  border-radius: 8px 14px 14px 8px;
-  box-shadow: var(--shadow-book-3d);
-  cursor: pointer;
-  overflow: hidden;
+  margin-top: -0.5rem;
+}
+
+/* Hardcover Base Backplate (الغلاف الخارجي الصلب يبرز بوضوح حول الصفحات) */
+.hardcover-book-base {
+  position: relative;
+  background: linear-gradient(135deg, #3a060d 0%, #4d0e16 45%, #280407 100%);
+  border-radius: 12px 24px 24px 12px;
+  padding: 12px clamp(32px, 7vw, 68px) 12px clamp(24px, 5vw, 32px);
+  box-shadow:
+    0 32px 70px -10px rgba(0, 0, 0, 0.92),
+    0 12px 28px rgba(0, 0, 0, 0.65),
+    inset 0 0 0 1px rgba(226, 155, 98, 0.35),
+    inset 0 0 35px rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.single-book-card:hover {
-  transform: translateY(-2px) scale(1.006);
-  box-shadow: 0 35px 85px -10px rgba(0, 0, 0, 0.9);
+.hardcover-book-base:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 38px 85px -10px rgba(0, 0, 0, 0.96),
+    0 16px 36px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px rgba(226, 155, 98, 0.45);
 }
 
-/* Silky Smooth Realistic Page Turn Animation */
-.single-book-card.is-turning-forward {
-  animation: smoothPageTurnForward 0.38s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-.single-book-card.is-turning-backward {
-  animation: smoothPageTurnBackward 0.38s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-}
-
-@keyframes smoothPageTurnForward {
-  0% { transform: scale(1) translateX(0) rotateY(0deg); }
-  50% { transform: scale(0.97) translateX(-18px) rotateY(-10deg); filter: brightness(0.9); }
-  100% { transform: scale(1) translateX(0) rotateY(0deg); filter: brightness(1); }
-}
-
-@keyframes smoothPageTurnBackward {
-  0% { transform: scale(1) translateX(0) rotateY(0deg); }
-  50% { transform: scale(0.97) translateX(18px) rotateY(10deg); filter: brightness(0.9); }
-  100% { transform: scale(1) translateX(0) rotateY(0deg); filter: brightness(1); }
-}
-
-/* Sweeping Page Curl Shadow Layer */
-.page-flip-curl-shadow {
+/* Vintage Brass / Gold Corner Protectors on Hardcover */
+.cover-corner-bracket {
   position: absolute;
-  inset: 0;
+  width: 24px;
+  height: 24px;
   pointer-events: none;
-  z-index: 30;
+  z-index: 25;
 }
 
-.page-flip-curl-shadow.forward {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 40%, rgba(255, 255, 255, 0.15) 100%);
-  animation: shadowSweep 0.38s ease forwards;
+.cover-corner-bracket.top-left {
+  top: 4px;
+  left: 4px;
+  border-top: 2.5px solid #d4af37;
+  border-left: 2.5px solid #d4af37;
+  border-top-left-radius: 8px;
 }
 
-.page-flip-curl-shadow.backward {
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 40%, rgba(255, 255, 255, 0.15) 100%);
-  animation: shadowSweep 0.38s ease forwards;
+.cover-corner-bracket.top-right {
+  top: 4px;
+  right: 4px;
+  border-top: 2.5px solid #d4af37;
+  border-right: 2.5px solid #d4af37;
+  border-top-right-radius: 16px;
 }
 
-@keyframes shadowSweep {
-  0% { opacity: 0; }
-  50% { opacity: 0.8; }
-  100% { opacity: 0; }
+.cover-corner-bracket.bottom-left {
+  bottom: 4px;
+  left: 4px;
+  border-bottom: 2.5px solid #d4af37;
+  border-left: 2.5px solid #d4af37;
+  border-bottom-left-radius: 8px;
 }
 
-/* Hardcover Spine Left Border Depth */
-.hardcover-spine-edge {
+.cover-corner-bracket.bottom-right {
+  bottom: 4px;
+  right: 4px;
+  border-bottom: 2.5px solid #d4af37;
+  border-right: 2.5px solid #d4af37;
+  border-bottom-right-radius: 16px;
+}
+
+/* Hardcover Spine Column with 3D Depth & Stitched Hinges */
+.hardcover-spine-column {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 14px;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.55) 0%, rgba(255, 255, 255, 0.12) 40%, rgba(0, 0, 0, 0.35) 100%);
-  border-radius: 8px 0 0 8px;
+  width: 24px;
+  background: linear-gradient(to right, #1a0205 0%, #3e0912 35%, #560f18 65%, #220306 100%);
+  border-radius: 12px 0 0 12px;
+  z-index: 30;
+  box-shadow: inset -2px 0 6px rgba(0, 0, 0, 0.65);
   pointer-events: none;
-  z-index: 25;
 }
 
-/* Content Container for Each Page */
-.single-page-content-wrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
+.spine-fold-shadow {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.6), transparent);
+}
+
+.spine-embossed-ridge {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  height: 4px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.28), rgba(0, 0, 0, 0.5));
+  border-radius: 2px;
+}
+
+.spine-embossed-ridge.ridge-1 { top: 20%; }
+.spine-embossed-ridge.ridge-2 { top: 50%; }
+.spine-embossed-ridge.ridge-3 { top: 80%; }
+
+.spine-gold-stitch {
+  position: absolute;
+  right: 4px;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: repeating-linear-gradient(to bottom, #d4af37 0px, #d4af37 4px, transparent 4px, transparent 8px);
+  opacity: 0.65;
+}
+
+/* Left Stacked Pages (الورق المقلوب المتجمع على الشمال) */
+.staggered-pages-stack-left {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 4px;
+  width: 20px;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.staggered-leaf-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  background: linear-gradient(to left, #36070e 0%, #4a0d16 100%);
+  border-radius: 12px 0 0 12px;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.staggered-leaf-edge:hover {
+  transform: translateX(-3px);
+}
+
+.left-leaf-1 { left: -4px; z-index: 2; }
+.left-leaf-2 { left: -8px; z-index: 1; }
+
+/* Right Stacked Pages (صفحات الكتاب المتتالية المرصوصة خلف الصفحة زي الصورة المرجعية) */
+.staggered-pages-stack-right {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 100%;
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.staggered-leaf-tab {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -8px; /* tucks under right edge of active page */
+  background: linear-gradient(to right, #34070d 0%, #4d0e16 60%, #681622 100%);
+  border-radius: 0 16px 16px 0;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.5), inset -1px 0 0 rgba(255, 255, 255, 0.2);
+  cursor: pointer;
   display: flex;
-  overflow: hidden;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 4px;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.25s ease;
+  user-select: none;
 }
 
-/* Page Corner Curl Hints */
-.page-curl-corner-hint {
+.staggered-leaf-tab:hover {
+  transform: translateX(5px);
+  filter: brightness(1.25);
+}
+
+.tab-vertical-hint {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Cinzel', 'Playfair Display', serif;
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tab-gilded-edge {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: linear-gradient(to bottom, #c29547 0%, #f6e0b5 50%, #c29547 100%);
+  border-radius: 0 16px 16px 0;
+}
+
+/* The Inner Book Pages Deck (مسرح الصفحات النشطة) */
+.book-pages-deck {
+  width: min(480px, 83vw);
+  max-height: 82vh;
+  aspect-ratio: 438 / 579;
+  position: relative;
+  transform-style: preserve-3d;
+  border-radius: 6px 18px 18px 6px;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65);
+  cursor: pointer;
+  z-index: 35;
+}
+
+/* The Underlying Active Page Layer */
+.book-page-layer.underlying-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px 18px 18px 6px;
+  overflow: hidden;
+  z-index: 5;
+}
+
+/* Underlying Page Dynamic Shadow (Fade in/out during turn) */
+.underlying-page-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 45;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.15) 45%, transparent 100%);
+  animation: underlyingFade 0.6s ease forwards;
+}
+
+@keyframes underlyingFade {
+  0% { opacity: 0.92; }
+  100% { opacity: 0; }
+}
+
+/* The 3D Flipping Leaf (حركة قلبة صفحة الكتاب الحقيقية ثلاثية الأبعاد) */
+.book-flipping-leaf {
+  position: absolute;
+  inset: 0;
+  transform-origin: 0% 50%; /* المحور هو الثنية الشمال للكتاب */
+  transform-style: preserve-3d;
+  z-index: 60;
+  pointer-events: none;
+  border-radius: 6px 18px 18px 6px;
+}
+
+.book-flipping-leaf.leaf-turn-forward {
+  animation: pageTurn3DForward 0.6s cubic-bezier(0.35, 0, 0.25, 1) forwards;
+}
+
+.book-flipping-leaf.leaf-turn-backward {
+  animation: pageTurn3DBackward 0.6s cubic-bezier(0.35, 0, 0.25, 1) forwards;
+}
+
+@keyframes pageTurn3DForward {
+  0% {
+    transform: rotateY(0deg);
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+  }
+  30% {
+    transform: rotateY(-50deg) skewY(-1.2deg);
+    filter: drop-shadow(-16px 16px 32px rgba(0, 0, 0, 0.55));
+  }
+  60% {
+    transform: rotateY(-115deg) skewY(-1.2deg) scale(0.98);
+    filter: drop-shadow(-22px 18px 40px rgba(0, 0, 0, 0.62));
+  }
+  100% {
+    transform: rotateY(-180deg) skewY(0deg);
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.25));
+  }
+}
+
+@keyframes pageTurn3DBackward {
+  0% {
+    transform: rotateY(-180deg);
+    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.25));
+  }
+  30% {
+    transform: rotateY(-130deg) skewY(1.2deg);
+    filter: drop-shadow(-18px 16px 35px rgba(0, 0, 0, 0.55));
+  }
+  60% {
+    transform: rotateY(-65deg) skewY(1.2deg) scale(0.98);
+    filter: drop-shadow(18px 18px 40px rgba(0, 0, 0, 0.62));
+  }
+  100% {
+    transform: rotateY(0deg) skewY(0deg);
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+  }
+}
+
+/* Front & Back Faces of the Flipping Leaf */
+.leaf-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 6px 18px 18px 6px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.leaf-face-front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+
+.leaf-face-back {
+  transform: rotateY(180deg);
+  z-index: 1;
+  background: linear-gradient(135deg, #38070d 0%, #520f18 45%, #2a0508 100%), url('/images/burgundy-texture.jpg') center/cover;
+  box-shadow: inset 16px 0 35px rgba(0, 0, 0, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Scrapbook Page Back Design */
+.scrapbook-page-back-canvas {
+  width: calc(100% - 2rem);
+  height: calc(100% - 2rem);
+  border: 1.5px dashed rgba(226, 155, 98, 0.35);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.back-damask-motif {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.back-heart-crest {
+  font-size: 2.2rem;
+  color: var(--gold-script);
+  text-shadow: 0 0 12px rgba(226, 155, 98, 0.5);
+}
+
+.back-gold-rule {
+  width: 70px;
+  height: 1.5px;
+  background: linear-gradient(to right, transparent, #e29b62, transparent);
+}
+
+.back-book-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Shading Glare across the turning leaf */
+.leaf-shading-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+}
+
+.leaf-shading-glare.front-glare {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0.22) 50%, rgba(0, 0, 0, 0.4) 100%);
+  animation: glareSweepForward 0.6s ease-in-out forwards;
+}
+
+.leaf-shading-glare.back-glare {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0.22) 50%, rgba(0, 0, 0, 0.4) 100%);
+  animation: glareSweepBackward 0.6s ease-in-out forwards;
+}
+
+@keyframes glareSweepForward {
+  0% { opacity: 0; }
+  35% { opacity: 0.82; }
+  100% { opacity: 0; }
+}
+
+@keyframes glareSweepBackward {
+  0% { opacity: 0; }
+  35% { opacity: 0.82; }
+  100% { opacity: 0; }
+}
+
+/* Inner Gutter Shadow (ثنية الكتاب الداخلية) */
+.book-inner-gutter-shadow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 18px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.15) 60%, transparent 100%);
+  pointer-events: none;
+  z-index: 35;
+  border-radius: 6px 0 0 6px;
+}
+
+/* Corner Curl Peek Indicators */
+.corner-curl-peek {
   position: absolute;
   bottom: 0;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   pointer-events: none;
-  z-index: 25;
+  z-index: 35;
 }
 
-.page-curl-corner-hint.next-hint {
+.corner-curl-peek.next-curl {
   right: 0;
-  background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.35) 100%);
-  border-radius: 0 0 14px 0;
+  background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0.42) 100%);
+  border-radius: 0 0 18px 0;
 }
 
-.page-curl-corner-hint.prev-hint {
+.corner-curl-peek.prev-curl {
   left: 0;
-  background: linear-gradient(225deg, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.35) 100%);
-  border-radius: 0 0 0 8px;
+  background: linear-gradient(225deg, transparent 50%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0.42) 100%);
+  border-radius: 0 0 0 6px;
 }
 
-/* Floor Ambient Shadow */
-.book-floor-shadow {
+/* Hardcover Overhang Rims (بروز أطراف الغلاف) */
+.hardcover-overhang-rim {
   position: absolute;
-  left: 5%;
-  right: 5%;
-  bottom: -18px;
-  height: 26px;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 70%);
-  filter: blur(10px);
   pointer-events: none;
-  z-index: -1;
+  z-index: 10;
+}
+
+.hardcover-overhang-rim.top-rim {
+  top: 0;
+  left: 20px;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
+}
+
+.hardcover-overhang-rim.bottom-rim {
+  bottom: 0;
+  left: 20px;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+}
+
+.hardcover-overhang-rim.right-rim {
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 14px;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.4), transparent);
+}
+
+/* 3D Realistic Contact Floor Shadow */
+.book-scene-floor-shadow {
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  bottom: -22px;
+  height: 32px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0) 70%);
+  filter: blur(12px);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* =========================================================================
