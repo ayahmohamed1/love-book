@@ -19,7 +19,7 @@ export const bookContent = {
   // 1️⃣ صفحة الغلاف (Cover Page - OUR LOVE)
   cover: {
     title: "OUR LOVE",
-    subtitle: "MI LUGAR FAVORITO",
+    subtitle: "BOOK OF US ",
     columns: [
       {
         title: "HISTORIA",
