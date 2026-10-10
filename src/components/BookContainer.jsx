@@ -249,8 +249,8 @@ export function BookContainer({ content }) {
             {/* Inner Gutter Shadow (ثنية الكتاب الداخلية) */}
             <div className="book-inner-gutter-shadow"></div>
 
-            {/* Cute Minimalist Arrows (شبه سهم صفحة القطة، مدورة وكيوت وبدون أي كتابة) */}
-            {currentPage < totalPages - 1 && currentPage !== 1 && !isFlipping && (
+            {/* Cute Minimalist Arrows (مطابقة للمكان والشكل في كل الصفحات وبدون أي كتابة) */}
+            {currentPage < totalPages - 1 && !isFlipping && (
               <button
                 className={`cute-page-arrow-btn next-arrow-btn ${currentPage === 0 ? 'cover-arrow' : ''}`}
                 onClick={(e) => {

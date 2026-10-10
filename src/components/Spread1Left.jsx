@@ -1,7 +1,6 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
 
-export function Spread1Left({ data, onNext }) {
+export function Spread1Left({ data }) {
   const {
     topImage = "/images/cat.jpg",
     title = "Happy Birthday, my love.",
@@ -32,21 +31,6 @@ export function Spread1Left({ data, onNext }) {
         <p className="message-body-text">
           {message}
         </p>
-
-        {/* Bottom Arrow Button to turn to next page */}
-        <div className="message-footer-action">
-          <button
-            className="message-next-arrow-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onNext) onNext();
-            }}
-            title="الصفحة التالية"
-            aria-label="Next page"
-          >
-            <ArrowRight className="w-6 h-6 text-white" />
-          </button>
-        </div>
       </div>
     </div>
   );
