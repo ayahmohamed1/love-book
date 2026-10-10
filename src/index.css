@@ -9,7 +9,7 @@
   --burgundy-dark: #2a060a;
   --burgundy-accent: #6b1723;
   --burgundy-glow: #e63946;
-  --gold-script: #e29b62;
+  --gold-script: #111111;
   --card-cream: #fbf8f3;
   --paper-white: #ffffff;
   --shadow-book-3d: 0 30px 75px -15px rgba(10, 2, 4, 0.85), 0 12px 30px rgba(0, 0, 0, 0.45);
@@ -69,17 +69,17 @@ body {
   margin-top: -0.5rem;
 }
 
-/* Hardcover Base Backplate (الغلاف الخارجي الصلب يبرز بوضوح حول الصفحات) */
+/* Hardcover Base Backplate (الغلاف الخارجي الصلب بلمسة سوداء فاخرة بدون أي لون أصفر) */
 .hardcover-book-base {
   position: relative;
-  background: linear-gradient(135deg, #3a060d 0%, #4d0e16 45%, #280407 100%);
+  background: linear-gradient(135deg, #32050a 0%, #460b13 45%, #1e0204 100%);
   border-radius: 12px 24px 24px 12px;
   padding: 12px clamp(32px, 7vw, 68px) 12px clamp(24px, 5vw, 32px);
   box-shadow:
-    0 32px 70px -10px rgba(0, 0, 0, 0.92),
-    0 12px 28px rgba(0, 0, 0, 0.65),
-    inset 0 0 0 1px rgba(226, 155, 98, 0.35),
-    inset 0 0 35px rgba(0, 0, 0, 0.7);
+    0 32px 70px -10px rgba(0, 0, 0, 0.95),
+    0 12px 28px rgba(0, 0, 0, 0.72),
+    inset 0 0 0 1.5px #111111,
+    inset 0 0 35px rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,12 +90,12 @@ body {
 .hardcover-book-base:hover {
   transform: translateY(-2px);
   box-shadow:
-    0 38px 85px -10px rgba(0, 0, 0, 0.96),
-    0 16px 36px rgba(0, 0, 0, 0.75),
-    inset 0 0 0 1px rgba(226, 155, 98, 0.45);
+    0 38px 85px -10px rgba(0, 0, 0, 0.98),
+    0 16px 36px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 1.5px #000000;
 }
 
-/* Vintage Brass / Gold Corner Protectors on Hardcover */
+/* Sleek Obsidian Black Corner Protectors on Hardcover */
 .cover-corner-bracket {
   position: absolute;
   width: 24px;
@@ -107,33 +107,37 @@ body {
 .cover-corner-bracket.top-left {
   top: 4px;
   left: 4px;
-  border-top: 2.5px solid #d4af37;
-  border-left: 2.5px solid #d4af37;
+  border-top: 2.5px solid #111111;
+  border-left: 2.5px solid #111111;
   border-top-left-radius: 8px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
 }
 
 .cover-corner-bracket.top-right {
   top: 4px;
   right: 4px;
-  border-top: 2.5px solid #d4af37;
-  border-right: 2.5px solid #d4af37;
+  border-top: 2.5px solid #111111;
+  border-right: 2.5px solid #111111;
   border-top-right-radius: 16px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
 }
 
 .cover-corner-bracket.bottom-left {
   bottom: 4px;
   left: 4px;
-  border-bottom: 2.5px solid #d4af37;
-  border-left: 2.5px solid #d4af37;
+  border-bottom: 2.5px solid #111111;
+  border-left: 2.5px solid #111111;
   border-bottom-left-radius: 8px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
 }
 
 .cover-corner-bracket.bottom-right {
   bottom: 4px;
   right: 4px;
-  border-bottom: 2.5px solid #d4af37;
-  border-right: 2.5px solid #d4af37;
+  border-bottom: 2.5px solid #111111;
+  border-right: 2.5px solid #111111;
   border-bottom-right-radius: 16px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
 }
 
 /* Hardcover Spine Column with 3D Depth & Stitched Hinges */
@@ -143,10 +147,10 @@ body {
   top: 0;
   bottom: 0;
   width: 24px;
-  background: linear-gradient(to right, #1a0205 0%, #3e0912 35%, #560f18 65%, #220306 100%);
+  background: linear-gradient(to right, #120103 0%, #34070e 35%, #4a0d15 65%, #180204 100%);
   border-radius: 12px 0 0 12px;
   z-index: 30;
-  box-shadow: inset -2px 0 6px rgba(0, 0, 0, 0.65);
+  box-shadow: inset -2px 0 6px rgba(0, 0, 0, 0.75);
   pointer-events: none;
 }
 
@@ -156,7 +160,7 @@ body {
   top: 0;
   bottom: 0;
   width: 3px;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.6), transparent);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.7), transparent);
 }
 
 .spine-embossed-ridge {
@@ -164,7 +168,7 @@ body {
   left: 2px;
   right: 2px;
   height: 4px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.28), rgba(0, 0, 0, 0.5));
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0.6));
   border-radius: 2px;
 }
 
@@ -172,14 +176,14 @@ body {
 .spine-embossed-ridge.ridge-2 { top: 50%; }
 .spine-embossed-ridge.ridge-3 { top: 80%; }
 
-.spine-gold-stitch {
+.spine-black-stitch {
   position: absolute;
   right: 4px;
   top: 10px;
   bottom: 10px;
-  width: 1px;
-  background: repeating-linear-gradient(to bottom, #d4af37 0px, #d4af37 4px, transparent 4px, transparent 8px);
-  opacity: 0.65;
+  width: 1.5px;
+  background: repeating-linear-gradient(to bottom, #111111 0px, #111111 4px, transparent 4px, transparent 8px);
+  opacity: 0.85;
 }
 
 /* Left Stacked Pages (الورق المقلوب المتجمع على الشمال) */
@@ -257,14 +261,15 @@ body {
   pointer-events: none;
 }
 
-.tab-gilded-edge {
+.tab-black-edge {
   position: absolute;
   right: 0;
   top: 0;
   bottom: 0;
-  width: 1.5px;
-  background: linear-gradient(to bottom, #c29547 0%, #f6e0b5 50%, #c29547 100%);
+  width: 2px;
+  background: linear-gradient(to bottom, #111111 0%, #2e2e2e 50%, #000000 100%);
   border-radius: 0 16px 16px 0;
+  box-shadow: -1px 0 2px rgba(0, 0, 0, 0.6);
 }
 
 /* The Inner Book Pages Deck (مسرح الصفحات النشطة) */
@@ -390,7 +395,7 @@ body {
 .scrapbook-page-back-canvas {
   width: calc(100% - 2rem);
   height: calc(100% - 2rem);
-  border: 1.5px dashed rgba(226, 155, 98, 0.35);
+  border: 1.5px dashed rgba(255, 255, 255, 0.22);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -408,14 +413,14 @@ body {
 
 .back-heart-crest {
   font-size: 2.2rem;
-  color: var(--gold-script);
-  text-shadow: 0 0 12px rgba(226, 155, 98, 0.5);
+  color: #111111;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
 }
 
-.back-gold-rule {
+.back-monogram-rule {
   width: 70px;
   height: 1.5px;
-  background: linear-gradient(to right, transparent, #e29b62, transparent);
+  background: linear-gradient(to right, transparent, #111111, transparent);
 }
 
 .back-book-title {
@@ -468,26 +473,82 @@ body {
   border-radius: 6px 0 0 6px;
 }
 
-/* Corner Curl Peek Indicators */
-.corner-curl-peek {
+/* =========================================================================
+   CHIC LUXURY PAGE TURN INDICATOR BADGES
+   (تصميم أنيق ومودرن وفاخر وبدون أي أجزاء شفافة تغطي الصور أو الغلاف)
+   ========================================================================= */
+.chic-flip-indicator {
   position: absolute;
-  bottom: 0;
-  width: 36px;
-  height: 36px;
-  pointer-events: none;
-  z-index: 35;
+  bottom: 12px;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #0d0d0d;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 9999px;
+  padding: 5px 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  user-select: none;
 }
 
-.corner-curl-peek.next-curl {
-  right: 0;
-  background: linear-gradient(135deg, transparent 50%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0.42) 100%);
-  border-radius: 0 0 18px 0;
+.chic-flip-indicator:hover {
+  background: #000000;
+  border-color: rgba(255, 255, 255, 0.65);
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.85);
 }
 
-.corner-curl-peek.prev-curl {
-  left: 0;
-  background: linear-gradient(225deg, transparent 50%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0.42) 100%);
-  border-radius: 0 0 0 6px;
+.chic-flip-indicator.next-indicator {
+  right: 14px;
+}
+
+.chic-flip-indicator.prev-indicator {
+  left: 14px;
+}
+
+.chic-flip-indicator.is-cover-badge {
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 6px 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+.chic-indicator-arrow {
+  display: inline-block;
+  font-size: 0.82rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.next-indicator .chic-indicator-arrow {
+  animation: chicNudgeForward 1.6s ease-in-out infinite;
+}
+
+.prev-indicator .chic-indicator-arrow {
+  animation: chicNudgeBackward 1.6s ease-in-out infinite;
+}
+
+@keyframes chicNudgeForward {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+@keyframes chicNudgeBackward {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-3px); }
+}
+
+.chic-indicator-text {
+  letter-spacing: 2px;
 }
 
 /* Hardcover Overhang Rims (بروز أطراف الغلاف) */

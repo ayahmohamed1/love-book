@@ -62,7 +62,7 @@ export function BookContainer({ content }) {
     setTargetPage(target);
     sounds.playPageFlip();
 
-    // 600ms realistic 3D book leaf curl animation
+    // 600ms realistic 3D page turn
     setTimeout(() => {
       setCurrentPage(target);
       setIsFlipping(false);
@@ -103,8 +103,12 @@ export function BookContainer({ content }) {
   // Click on page: left side flips back, right side flips forward
   const handlePageClick = (e) => {
     if (['BUTTON', 'INPUT', 'A'].includes(e.target.tagName)) return;
-    // Don't flip if clicking inside music card or photo lightbox
-    if (e.target.closest('.compact-music-card') || e.target.closest('.lightbox-content')) return;
+    // Don't flip if clicking inside music card, chic button, or photo lightbox
+    if (
+      e.target.closest('.compact-music-card') ||
+      e.target.closest('.lightbox-content') ||
+      e.target.closest('.chic-flip-indicator')
+    ) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
@@ -147,22 +151,22 @@ export function BookContainer({ content }) {
       {/* 3D Physical Scrapbook Container */}
       <div className="book-3d-scene">
         
-        {/* Hardcover Base Backplate (الغلاف الصلب الخارجي يبرز بوضوح حول الصفحات) */}
+        {/* Hardcover Base Backplate (الغلاف الصلب الخارجي بلمسة سوداء فاخرة وبدون أي زوايا صفراء) */}
         <div className="hardcover-book-base">
           
-          {/* Vintage Ornate Brass Corner Protectors on Hardcover */}
+          {/* Sleek Black Metallic Corner Protectors on Hardcover */}
           <div className="cover-corner-bracket top-left"></div>
           <div className="cover-corner-bracket top-right"></div>
           <div className="cover-corner-bracket bottom-left"></div>
           <div className="cover-corner-bracket bottom-right"></div>
 
-          {/* Hardcover Spine Column with 3D Depth & Stitched Hinges */}
+          {/* Hardcover Spine Column with 3D Depth & Sleek Black Stitched Hinges */}
           <div className="hardcover-spine-column">
             <div className="spine-fold-shadow"></div>
             <div className="spine-embossed-ridge ridge-1"></div>
             <div className="spine-embossed-ridge ridge-2"></div>
             <div className="spine-embossed-ridge ridge-3"></div>
-            <div className="spine-gold-stitch"></div>
+            <div className="spine-black-stitch"></div>
           </div>
 
           {/* Left Stacked Pages (الورق المقلوب المتجمع على الشمال) */}
@@ -193,7 +197,7 @@ export function BookContainer({ content }) {
               {isFlipping && <div className="underlying-page-shadow"></div>}
             </div>
 
-            {/* Right Stacked Pages (صفحات الكتاب المتتالية المرصوصة خلف الصفحة زي الصورة المرجعية) */}
+            {/* Right Stacked Pages (صفحات الكتاب المتتالية المرصوصة خلف الصفحة مع لمسات سوداء راقية) */}
             <div className="staggered-pages-stack-right">
               {Array.from({ length: totalPages - 1 - currentPage }).map((_, idx) => {
                 const pIdx = currentPage + 1 + idx;
@@ -213,7 +217,7 @@ export function BookContainer({ content }) {
                     title={`انتقل إلى: ${pageNames[pIdx]?.label || `صفحة ${pIdx + 1}`}`}
                   >
                     <span className="tab-vertical-hint">{pageNames[pIdx]?.title}</span>
-                    <div className="tab-gilded-edge"></div>
+                    <div className="tab-black-edge"></div>
                   </div>
                 );
               })}
@@ -228,12 +232,12 @@ export function BookContainer({ content }) {
                   <div className="leaf-shading-glare front-glare"></div>
                 </div>
 
-                {/* Back face of leaf: luxury burgundy scrapbook texture with gold crest */}
+                {/* Back face of leaf: luxury burgundy scrapbook texture with black/silver crest */}
                 <div className="leaf-face leaf-face-back">
                   <div className="scrapbook-page-back-canvas">
                     <div className="back-damask-motif">
                       <div className="back-heart-crest">❦</div>
-                      <div className="back-gold-rule"></div>
+                      <div className="back-monogram-rule"></div>
                       <span className="back-book-title">BOOK OF US</span>
                     </div>
                   </div>
@@ -245,12 +249,35 @@ export function BookContainer({ content }) {
             {/* Inner Gutter Shadow (ثنية الكتاب الداخلية) */}
             <div className="book-inner-gutter-shadow"></div>
 
-            {/* Corner Curl Peek Indicators */}
+            {/* Chic Minimalist Page Turn Hint (أنيق ومودرن جداً وبدون أي جزء شفاف يغطي الصور) */}
             {currentPage < totalPages - 1 && !isFlipping && (
-              <div className="corner-curl-peek next-curl" title="الصفحة التالية"></div>
+              <div
+                className={`chic-flip-indicator next-indicator ${currentPage === 0 ? 'is-cover-badge' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  flipForward();
+                }}
+                title={currentPage === 0 ? "افتح الكتاب" : "الصفحة التالية"}
+              >
+                <span className="chic-indicator-text">
+                  {currentPage === 0 ? "OPEN" : "FLIP"}
+                </span>
+                <span className="chic-indicator-arrow">→</span>
+              </div>
             )}
+
             {currentPage > 0 && !isFlipping && (
-              <div className="corner-curl-peek prev-curl" title="الصفحة السابقة"></div>
+              <div
+                className="chic-flip-indicator prev-indicator"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  flipBackward();
+                }}
+                title="الصفحة السابقة"
+              >
+                <span className="chic-indicator-arrow">←</span>
+                <span className="chic-indicator-text">BACK</span>
+              </div>
             )}
           </div>
 

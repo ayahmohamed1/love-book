@@ -12,7 +12,7 @@ export const bookContent = {
     burgundy: "#4a1017",
     burgundyDark: "#2e070c",
     burgundyAccent: "#6b1723",
-    goldScript: "#e29b62",
+    blackScript: "#111111",
     white: "#ffffff",
   },
 
