@@ -162,7 +162,7 @@ export function Spread2Left({ data }) {
           {/* Playback Controls */}
           <div className="compact-controls-row">
             <button
-              className="compact-ctrl-icon-btn"
+              className="compact-ctrl-icon-btn skip-black-btn"
               onClick={(e) => {
                 e.stopPropagation();
                 if (audioRef.current) audioRef.current.currentTime = 0;
@@ -170,7 +170,7 @@ export function Spread2Left({ data }) {
               title="Previous"
               aria-label="Previous"
             >
-              <SkipBack className="w-4 h-4 fill-white text-white" />
+              <SkipBack className="w-4 h-4 fill-black text-black" />
             </button>
 
             <button
@@ -187,7 +187,7 @@ export function Spread2Left({ data }) {
             </button>
 
             <button
-              className="compact-ctrl-icon-btn"
+              className="compact-ctrl-icon-btn skip-black-btn"
               onClick={(e) => {
                 e.stopPropagation();
                 if (audioRef.current) {
@@ -197,7 +197,7 @@ export function Spread2Left({ data }) {
               title="Next"
               aria-label="Next"
             >
-              <SkipForward className="w-4 h-4 fill-white text-white" />
+              <SkipForward className="w-4 h-4 fill-black text-black" />
             </button>
           </div>
 
