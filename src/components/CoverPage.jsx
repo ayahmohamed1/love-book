@@ -46,6 +46,7 @@ export function CoverPage({ data, onOpenBook }) {
               alt="Cover romantic moment"
               className="cover-photo-img"
               loading="eager"
+              decoding="async"
             />
           </div>
         </div>

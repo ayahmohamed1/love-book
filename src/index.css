@@ -299,83 +299,95 @@ body {
 }
 
 /* The Underlying Active Page Layer */
-.book-page-layer.underlying-layer {
+.book-page-layer {
   position: absolute;
   inset: 0;
   border-radius: 6px 18px 18px 6px;
   overflow: hidden;
-  z-index: 5;
+  will-change: opacity, transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
-/* Underlying Page Dynamic Shadow (Fade in/out during turn) */
+.book-page-layer.active-layer {
+  z-index: 5;
+  visibility: visible;
+}
+
+.book-page-layer.inactive-layer {
+  z-index: 1;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Underlying Page Dynamic Shadow (Smooth fade during turn) */
 .underlying-page-shadow {
   position: absolute;
   inset: 0;
   pointer-events: none;
   z-index: 45;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.15) 45%, transparent 100%);
-  animation: underlyingFade 0.6s ease forwards;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.65) 0%, rgba(0, 0, 0, 0.15) 35%, transparent 100%);
+  animation: underlyingFade 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  will-change: opacity;
 }
 
 @keyframes underlyingFade {
-  0% { opacity: 0.92; }
+  0% { opacity: 0.85; }
   100% { opacity: 0; }
 }
 
-/* The 3D Flipping Leaf (حركة قلبة صفحة الكتاب الحقيقية ثلاثية الأبعاد) */
+/* The 3D Flipping Leaf (Smooth 60fps GPU-accelerated page turn) */
 .book-flipping-leaf {
   position: absolute;
   inset: 0;
-  transform-origin: 0% 50%; /* المحور هو الثنية الشمال للكتاب */
+  transform-origin: 0% 50%;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   z-index: 60;
   pointer-events: none;
   border-radius: 6px 18px 18px 6px;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .book-flipping-leaf.leaf-turn-forward {
-  animation: pageTurn3DForward 0.6s cubic-bezier(0.35, 0, 0.25, 1) forwards;
+  animation: pageTurn3DForward 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }
 
 .book-flipping-leaf.leaf-turn-backward {
-  animation: pageTurn3DBackward 0.6s cubic-bezier(0.35, 0, 0.25, 1) forwards;
+  animation: pageTurn3DBackward 0.5s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
 }
 
 @keyframes pageTurn3DForward {
   0% {
-    transform: rotateY(0deg);
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+    transform: rotateY(0deg) translateZ(0);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
   }
-  30% {
-    transform: rotateY(-50deg) skewY(-1.2deg);
-    filter: drop-shadow(-16px 16px 32px rgba(0, 0, 0, 0.55));
-  }
-  60% {
-    transform: rotateY(-115deg) skewY(-1.2deg) scale(0.98);
-    filter: drop-shadow(-22px 18px 40px rgba(0, 0, 0, 0.62));
+  50% {
+    transform: rotateY(-90deg) translateZ(0);
+    box-shadow: -15px 15px 35px rgba(0, 0, 0, 0.6);
   }
   100% {
-    transform: rotateY(-180deg) skewY(0deg);
-    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.25));
+    transform: rotateY(-180deg) translateZ(0);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
   }
 }
 
 @keyframes pageTurn3DBackward {
   0% {
-    transform: rotateY(-180deg);
-    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.25));
+    transform: rotateY(-180deg) translateZ(0);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
   }
-  30% {
-    transform: rotateY(-130deg) skewY(1.2deg);
-    filter: drop-shadow(-18px 16px 35px rgba(0, 0, 0, 0.55));
-  }
-  60% {
-    transform: rotateY(-65deg) skewY(1.2deg) scale(0.98);
-    filter: drop-shadow(18px 18px 40px rgba(0, 0, 0, 0.62));
+  50% {
+    transform: rotateY(-90deg) translateZ(0);
+    box-shadow: 15px 15px 35px rgba(0, 0, 0, 0.6);
   }
   100% {
-    transform: rotateY(0deg) skewY(0deg);
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+    transform: rotateY(0deg) translateZ(0);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
   }
 }
 
@@ -387,15 +399,20 @@ body {
   overflow: hidden;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .leaf-face-front {
-  transform: rotateY(0deg);
+  transform: rotateY(0deg) translateZ(1px);
+  -webkit-transform: rotateY(0deg) translateZ(1px);
   z-index: 2;
 }
 
 .leaf-face-back {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
+  -webkit-transform: rotateY(180deg) translateZ(1px);
   z-index: 1;
   background: linear-gradient(135deg, #38070d 0%, #520f18 45%, #2a0508 100%), url('/images/burgundy-texture.jpg') center/cover;
   box-shadow: inset 16px 0 35px rgba(0, 0, 0, 0.72);
@@ -449,27 +466,28 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 60;
+  will-change: opacity;
 }
 
 .leaf-shading-glare.front-glare {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0.22) 50%, rgba(0, 0, 0, 0.4) 100%);
-  animation: glareSweepForward 0.6s ease-in-out forwards;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0.18) 50%, rgba(0, 0, 0, 0.35) 100%);
+  animation: glareSweepForward 0.5s ease-out forwards;
 }
 
 .leaf-shading-glare.back-glare {
-  background: linear-gradient(to left, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0.22) 50%, rgba(0, 0, 0, 0.4) 100%);
-  animation: glareSweepBackward 0.6s ease-in-out forwards;
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0.18) 50%, rgba(0, 0, 0, 0.35) 100%);
+  animation: glareSweepBackward 0.5s ease-out forwards;
 }
 
 @keyframes glareSweepForward {
   0% { opacity: 0; }
-  35% { opacity: 0.82; }
+  35% { opacity: 0.55; }
   100% { opacity: 0; }
 }
 
 @keyframes glareSweepBackward {
   0% { opacity: 0; }
-  35% { opacity: 0.82; }
+  35% { opacity: 0.55; }
   100% { opacity: 0; }
 }
 

@@ -8,7 +8,7 @@ import {
   Volume2
 } from 'lucide-react';
 
-export function Spread2Left({ data }) {
+export function Spread2Left({ data, isLeaf = false }) {
   const { song } = data || {};
   const audioRef = useRef(null);
 
@@ -90,11 +90,13 @@ export function Spread2Left({ data }) {
 
   return (
     <div className="single-page-music-root">
-      <audio
-        ref={audioRef}
-        src={song?.audioUrl || "/audio/song.mp3"}
-        preload="metadata"
-      />
+      {!isLeaf && (
+        <audio
+          ref={audioRef}
+          src={song?.audioUrl || "/audio/song.mp3"}
+          preload="metadata"
+        />
+      )}
 
       <div className="compact-music-container" onClick={(e) => e.stopPropagation()}>
         
@@ -129,6 +131,7 @@ export function Spread2Left({ data }) {
                 alt="Our Song"
                 className="artwork-tilted-img"
                 loading="eager"
+                decoding="async"
               />
             </div>
           </div>

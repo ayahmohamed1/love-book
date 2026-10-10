@@ -18,6 +18,7 @@ export function Spread1Left({ data }) {
               alt="Love Message"
               className="message-cat-img"
               loading="eager"
+              decoding="async"
             />
           </div>
         </div>

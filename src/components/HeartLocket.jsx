@@ -43,7 +43,8 @@ export function HeartLocket({
                   src={leftImage}
                   alt="Left heart memory"
                   className="heart-photo"
-                  loading="lazy"
+                  loading="eager"
+                  decoding="async"
                 />
                 <div className="heart-glass-glare"></div>
               </div>
@@ -68,7 +69,8 @@ export function HeartLocket({
                   src={rightImage}
                   alt="Right heart memory"
                   className="heart-photo"
-                  loading="lazy"
+                  loading="eager"
+                  decoding="async"
                 />
                 <div className="heart-glass-glare"></div>
               </div>

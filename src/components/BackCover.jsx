@@ -11,6 +11,7 @@ export function BackCover({ data }) {
           alt="Our Heart"
           className="lace-heart-full-img"
           loading="eager"
+          decoding="async"
         />
       </div>
     </div>

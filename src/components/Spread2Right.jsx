@@ -59,7 +59,8 @@ export function Spread2Right({ data }) {
                     src={polaroid.image}
                     alt="Polaroid memory"
                     className="polaroid-img"
-                    loading="lazy"
+                    loading="eager"
+                    decoding="async"
                   />
                 </div>
               </div>

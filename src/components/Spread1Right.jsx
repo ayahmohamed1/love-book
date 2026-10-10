@@ -33,7 +33,8 @@ export function Spread1Right({ data }) {
                   src={item.url}
                   alt={`Memory ${idx + 1}`}
                   className="memory-card-img"
-                  loading="lazy"
+                  loading="eager"
+                  decoding="async"
                 />
               </div>
             </div>

@@ -33,6 +33,8 @@ export function BookContainer({ content }) {
     { title: "Heart", label: "Forever" }
   ];
 
+  const flipTimerRef = useRef(null);
+
   const renderPage = useCallback((pageIndex) => {
     switch (pageIndex) {
       case 0:
@@ -52,6 +54,36 @@ export function BookContainer({ content }) {
     }
   }, [content]);
 
+  const renderLeafContent = useCallback((pageIndex) => {
+    switch (pageIndex) {
+      case 0:
+        return <CoverPage data={content.cover} />;
+      case 1:
+        return <Spread1Left data={content.messagePage} />;
+      case 2:
+        return <Spread1Right data={content.memoriesPage} />;
+      case 3:
+        return <Spread2Left data={content.musicPage} isLeaf={true} />;
+      case 4:
+        return <Spread2Right data={content.lovePage} />;
+      case 5:
+        return <BackCover data={content.backPage} />;
+      default:
+        return null;
+    }
+  }, [content]);
+
+  const handleAnimationEnd = useCallback((e) => {
+    // Only respond to animations on the flipping leaf itself, not child elements
+    if (e.target !== e.currentTarget) return;
+    if (flipTimerRef.current) {
+      clearTimeout(flipTimerRef.current);
+      flipTimerRef.current = null;
+    }
+    setCurrentPage(targetPage);
+    setIsFlipping(false);
+  }, [targetPage]);
+
   const flipTo = useCallback((target, dir) => {
     if (isFlipping || target === currentPage || target < 0 || target >= totalPages) return;
     
@@ -61,11 +93,12 @@ export function BookContainer({ content }) {
     setTargetPage(target);
     sounds.playPageFlip();
 
-    // 600ms realistic 3D page turn
-    setTimeout(() => {
+    if (flipTimerRef.current) clearTimeout(flipTimerRef.current);
+    // 500ms safety timeout matching CSS 0.5s animation
+    flipTimerRef.current = setTimeout(() => {
       setCurrentPage(target);
       setIsFlipping(false);
-    }, 600);
+    }, 500);
   }, [currentPage, isFlipping, totalPages]);
 
   const flipForward = useCallback(() => {
@@ -190,11 +223,23 @@ export function BookContainer({ content }) {
             className="book-pages-deck"
             onClick={handlePageClick}
           >
-            {/* The Underlying Active Page Layer */}
-            <div className="book-page-layer underlying-layer">
-              {renderPage(underlyingPageIndex)}
-              {isFlipping && <div className="underlying-page-shadow"></div>}
-            </div>
+            {/* All 6 Book Page Layers - Kept persistent in DOM for instant 0ms switching */}
+            {[0, 1, 2, 3, 4, 5].map((pageIdx) => {
+              const isVisible = pageIdx === underlyingPageIndex;
+              return (
+                <div
+                  key={pageIdx}
+                  className={`book-page-layer ${isVisible ? 'active-layer' : 'inactive-layer'}`}
+                  style={{
+                    visibility: isVisible ? 'visible' : 'hidden',
+                    pointerEvents: isVisible && !isFlipping ? 'auto' : 'none'
+                  }}
+                >
+                  {renderPage(pageIdx)}
+                  {isVisible && isFlipping && <div className="underlying-page-shadow"></div>}
+                </div>
+              );
+            })}
 
             {/* Right Stacked Pages (صفحات الكتاب المتتالية المرصوصة خلف الصفحة مع لمسات سوداء راقية) */}
             <div className="staggered-pages-stack-right">
@@ -224,10 +269,13 @@ export function BookContainer({ content }) {
 
             {/* The 3D Flipping Leaf (حركة قلبة صفحة الكتاب الحقيقية ثلاثية الأبعاد) */}
             {isFlipping && flippingPageIndex !== null && (
-              <div className={`book-flipping-leaf leaf-turn-${flipDir}`}>
+              <div
+                className={`book-flipping-leaf leaf-turn-${flipDir}`}
+                onAnimationEnd={handleAnimationEnd}
+              >
                 {/* Front face of leaf: outgoing page */}
                 <div className="leaf-face leaf-face-front">
-                  {renderPage(flippingPageIndex)}
+                  {renderLeafContent(flippingPageIndex)}
                   <div className="leaf-shading-glare front-glare"></div>
                 </div>
 
