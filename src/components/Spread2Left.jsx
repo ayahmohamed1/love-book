@@ -6,11 +6,7 @@ import {
   SkipForward,
   Shuffle,
   Repeat,
-  Heart,
-  Volume2,
-  VolumeX,
-  Disc3,
-  Music2
+  Heart
 } from 'lucide-react';
 
 export function Spread2Left({ data }) {
@@ -19,13 +15,11 @@ export function Spread2Left({ data }) {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(182); // default ~3:02
+  const [duration, setDuration] = useState(182);
   const [isLiked, setIsLiked] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
 
-  // Sync audio events
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -57,7 +51,8 @@ export function Spread2Left({ data }) {
     };
   }, [isRepeat]);
 
-  const togglePlay = () => {
+  const togglePlay = (e) => {
+    e.stopPropagation();
     if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
@@ -65,32 +60,19 @@ export function Spread2Left({ data }) {
     } else {
       audioRef.current.play().then(() => {
         setIsPlaying(true);
-      }).catch((e) => {
-        console.warn("Audio play prevented or unavailable:", e);
-        setIsPlaying(true); // show animation anyway
+      }).catch(() => {
+        setIsPlaying(true);
       });
     }
   };
 
   const handleSeek = (e) => {
+    e.stopPropagation();
     const seekTo = parseFloat(e.target.value);
     setCurrentTime(seekTo);
     if (audioRef.current) {
       audioRef.current.currentTime = seekTo;
     }
-  };
-
-  const toggleMute = () => {
-    if (!audioRef.current) return;
-    audioRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
-  };
-
-  const formatTime = (seconds) => {
-    if (isNaN(seconds)) return "0:00";
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
@@ -99,46 +81,48 @@ export function Spread2Left({ data }) {
     <div className="spread-page spread2-left">
       <audio
         ref={audioRef}
-        src={song?.audioUrl}
+        src={song?.audioUrl || "/audio/song.mp3"}
         preload="metadata"
       />
 
-      <div className="music-player-card">
-        {/* Top Decorative Vintage Stamp Section */}
+      <div className="music-player-card" onClick={(e) => e.stopPropagation()}>
+        {/* Postage Stamp Photo Frame */}
         <div className="stamp-wrapper">
           <div className="postage-stamp-border">
             <div className="stamp-inner-artwork">
               <img
-                src={song?.stampImage}
+                src={song?.stampImage || "/images/song-cover.jpg"}
                 alt={song?.title || "Album art"}
                 className="stamp-photo"
                 loading="lazy"
               />
-              {/* Optional spinning vinyl disc animation behind stamp */}
-              <div className={`stamp-vinyl-disc ${isPlaying ? 'spinning' : ''}`}>
-                <Disc3 className="w-10 h-10 text-white/40" />
-              </div>
             </div>
           </div>
         </div>
 
-        {/* Track Details & Heart Like */}
+        {/* Title, Artist and Heart Icon */}
         <div className="track-info-row">
           <div className="track-text">
             <h3 className="track-title">{song?.title || "Por primera vez"}</h3>
             <p className="track-artist">{song?.artist || "Camilo y Evaluna Montaner"}</p>
           </div>
           <button
-            className={`heart-like-btn ${isLiked ? 'liked' : ''}`}
-            onClick={() => setIsLiked(!isLiked)}
-            aria-label="Like song"
-            title={isLiked ? "Saved to favorites" : "Add to favorites"}
+            className="heart-like-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsLiked(!isLiked);
+            }}
+            aria-label="Like"
           >
-            <Heart className={`w-5 h-5 ${isLiked ? 'fill-[#8b121e] text-[#8b121e]' : 'text-gray-400'}`} />
+            <Heart
+              className={`w-5 h-5 transition-colors ${
+                isLiked ? 'fill-[#5c0b14] text-[#5c0b14]' : 'text-neutral-400 stroke-1'
+              }`}
+            />
           </button>
         </div>
 
-        {/* Audio Progress Scrubber */}
+        {/* Minimal Progress Bar */}
         <div className="audio-progress-section">
           <div className="progress-bar-container">
             <input
@@ -149,98 +133,73 @@ export function Spread2Left({ data }) {
               onChange={handleSeek}
               className="progress-range-input"
               style={{
-                background: `linear-gradient(to right, #8b121e ${progressPercent}%, #e2d9d2 ${progressPercent}%)`
+                background: `linear-gradient(to right, #5c0b14 ${progressPercent}%, #e8e2dc ${progressPercent}%)`
               }}
               aria-label="Song progress"
             />
           </div>
-          <div className="time-display-row">
-            <span className="current-time">{formatTime(currentTime)}</span>
-            <span className="total-duration">{formatTime(duration)}</span>
-          </div>
         </div>
 
-        {/* Music Player Controls */}
+        {/* Player Controls (Shuffle, Prev, Play, Next, Repeat) */}
         <div className="player-controls-row">
           <button
             className={`ctrl-btn secondary-btn ${isShuffle ? 'active-ctrl' : ''}`}
-            onClick={() => setIsShuffle(!isShuffle)}
-            title="خلط الأغاني"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsShuffle(!isShuffle);
+            }}
             aria-label="Shuffle"
           >
-            <Shuffle className="w-4 h-4" />
+            <Shuffle className="w-3.5 h-3.5" />
           </button>
 
           <button
             className="ctrl-btn secondary-btn"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               if (audioRef.current) audioRef.current.currentTime = 0;
             }}
-            title="السابق"
-            aria-label="Previous track"
+            aria-label="Previous"
           >
-            <SkipBack className="w-5 h-5" />
+            <SkipBack className="w-4 h-4" />
           </button>
 
           <button
             className="ctrl-btn main-play-btn"
             onClick={togglePlay}
-            title={isPlaying ? "إيقاف مؤقت" : "تشغيل"}
-            aria-label={isPlaying ? "Pause song" : "Play song"}
+            aria-label={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? (
-              <Pause className="w-6 h-6 play-icon" />
+              <Pause className="w-4 h-4 fill-white text-white" />
             ) : (
-              <Play className="w-6 h-6 play-icon ml-0.5" />
+              <Play className="w-4 h-4 fill-white text-white ml-0.5" />
             )}
           </button>
 
           <button
             className="ctrl-btn secondary-btn"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               if (audioRef.current) {
                 audioRef.current.currentTime = Math.min(duration, currentTime + 10);
               }
             }}
-            title="التالي"
-            aria-label="Next track"
+            aria-label="Next"
           >
-            <SkipForward className="w-5 h-5" />
+            <SkipForward className="w-4 h-4" />
           </button>
 
           <button
             className={`ctrl-btn secondary-btn ${isRepeat ? 'active-ctrl' : ''}`}
-            onClick={() => setIsRepeat(!isRepeat)}
-            title="تكرار الأغنية"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsRepeat(!isRepeat);
+            }}
             aria-label="Repeat"
           >
-            <Repeat className="w-4 h-4" />
+            <Repeat className="w-3.5 h-3.5" />
           </button>
         </div>
-
-        {/* Audio Volume & Romantic Quote */}
-        <div className="player-footer-extra">
-          <button
-            onClick={toggleMute}
-            className="volume-toggle-btn"
-            title={isMuted ? "تشغيل الصوت" : "كتم الصوت"}
-            aria-label="Toggle mute"
-          >
-            {isMuted ? <VolumeX className="w-4 h-4 text-gray-500" /> : <Volume2 className="w-4 h-4 text-gray-500" />}
-          </button>
-
-          {song?.quote && (
-            <p className="song-romantic-quote">
-              <Music2 className="w-3.5 h-3.5 inline-block mr-1 text-[#8b121e]" />
-              "{song.quote}"
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Decorative Page Footer Number */}
-      <div className="page-footer-number">
-        <span>03</span>
       </div>
     </div>
   );

@@ -1,11 +1,10 @@
 import React from 'react';
-import { BookOpen, Sparkles } from 'lucide-react';
 
 export function CoverPage({ data, onOpenBook }) {
-  const { title, subtitle, columns, image, imageAlt } = data;
+  const { title, subtitle, columns, image } = data;
 
   return (
-    <div className="cover-page-root">
+    <div className="cover-page-root" onClick={onOpenBook} role="button" tabIndex={0}>
       <div className="cover-inner-border">
         {/* Header Title Section */}
         <header className="cover-header">
@@ -16,12 +15,12 @@ export function CoverPage({ data, onOpenBook }) {
           </div>
         </header>
 
-        {/* 4 Metadata Columns (Historia, Memories, Wishlist, Planeador) */}
+        {/* 4 Metadata Columns (HISTORIA, MEMORIES, WISHLIST, PLANEADOR) */}
         <section className="cover-meta-grid" aria-label="Book sections">
           {columns && columns.map((col, idx) => (
-            <div key={col.id || idx} className="cover-meta-col">
+            <div key={idx} className="cover-meta-col">
               <h3 className="cover-col-title">{col.title}</h3>
-              <p className="cover-col-desc">{col.description}</p>
+              <p className="cover-col-desc">{col.desc}</p>
             </div>
           ))}
         </section>
@@ -31,26 +30,17 @@ export function CoverPage({ data, onOpenBook }) {
           <div className="cover-photo-matting">
             <img
               src={image}
-              alt={imageAlt || "Cover romantic moment"}
+              alt="Cover romantic moment"
               className="cover-photo-img"
               loading="eager"
             />
           </div>
         </div>
 
-        {/* Interactive Open Book Action */}
-        <footer className="cover-footer">
-          <button
-            onClick={onOpenBook}
-            className="open-book-btn"
-            title="انقر لفتح الكتاب وبدء الرحلة"
-            aria-label="Open the love book"
-          >
-            <BookOpen className="w-5 h-5 btn-icon" />
-            <span className="btn-text">ابدأ قراءة القصة • Open Book</span>
-            <Sparkles className="w-4 h-4 btn-sparkle" />
-          </button>
-        </footer>
+        {/* Realistic Book Open Hover Cue */}
+        <div className="cover-open-cue">
+          <span className="cue-dot"></span>
+        </div>
       </div>
     </div>
   );

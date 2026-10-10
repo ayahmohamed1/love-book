@@ -1,48 +1,46 @@
 import React from 'react';
-import { RotateCcw, Heart, Sparkles } from 'lucide-react';
 
-export function BackCover({ data, onRestartBook }) {
-  const { title, message, dateText, footerQuote } = data;
+export function BackCover({ data }) {
+  const { title = "You are", titleSecondLine = "loved.", subtitle = "In every whispered breeze and every star above." } = data || {};
 
   return (
-    <div className="spread-page back-cover-root">
-      <div className="back-cover-inner">
-        {/* Wax Seal Stamp Decoration */}
-        <div className="wax-seal-container">
-          <div className="wax-seal-circle">
-            <Heart className="w-8 h-8 wax-heart fill-white text-white" />
-            <div className="wax-edge-ripple"></div>
+    <div className="spread-page back-cover-spread">
+      {/* Outer Card with subtle cream paper texture & shadow */}
+      <div className="scallop-card-wrapper">
+        <div className="scallop-card">
+          
+          {/* Inner Scalloped Frame (Wavy Edge Burgundy Container) */}
+          <div className="scallop-inner-frame">
+            <svg
+              className="scallop-svg-border"
+              viewBox="0 0 320 400"
+              preserveAspectRatio="none"
+              fill="#5c0b14"
+            >
+              {/* High precision symmetrical scalloped wavy path */}
+              <path d="
+                M 35 15
+                Q 50 8, 65 15 Q 80 8, 95 15 Q 110 8, 125 15 Q 140 8, 155 15 Q 170 8, 185 15 Q 200 8, 215 15 Q 230 8, 245 15 Q 260 8, 275 15 Q 290 8, 305 25
+                Q 312 40, 305 55 Q 312 70, 305 85 Q 312 100, 305 115 Q 312 130, 305 145 Q 312 160, 305 175 Q 312 190, 305 205 Q 312 220, 305 235 Q 312 250, 305 265 Q 312 280, 305 295 Q 312 310, 305 325 Q 312 340, 305 355 Q 312 370, 295 385
+                Q 280 392, 265 385 Q 250 392, 235 385 Q 220 392, 205 385 Q 190 392, 175 385 Q 160 392, 145 385 Q 130 392, 115 385 Q 100 392, 85 385 Q 70 392, 55 385 Q 40 392, 25 375
+                Q 18 360, 25 345 Q 18 330, 25 315 Q 18 300, 25 285 Q 18 270, 25 255 Q 18 240, 25 225 Q 18 210, 25 195 Q 18 180, 25 165 Q 18 150, 25 135 Q 18 120, 25 105 Q 18 90, 25 75 Q 18 60, 25 45 Q 18 30, 35 15
+                Z
+              " />
+            </svg>
+
+            {/* Inner Content */}
+            <div className="scallop-card-content">
+              <div className="you-are-loved-heading">
+                <span className="script-line-1">{title}</span>
+                <span className="script-line-2">{titleSecondLine}</span>
+              </div>
+
+              <p className="scallop-sub-poem">
+                {subtitle}
+              </p>
+            </div>
           </div>
-        </div>
 
-        <h2 className="back-cover-title">{title || "Forever & Always"}</h2>
-
-        <p className="back-cover-message">
-          "{message || "Every love story is beautiful, but ours is my favorite."}"
-        </p>
-
-        {dateText && (
-          <div className="back-cover-date-badge">
-            <span>{dateText}</span>
-          </div>
-        )}
-
-        {footerQuote && (
-          <p className="back-cover-footer-quote">
-            <Sparkles className="w-3.5 h-3.5 inline mr-1 text-amber-300" />
-            {footerQuote}
-          </p>
-        )}
-
-        <div className="back-cover-actions">
-          <button
-            onClick={onRestartBook}
-            className="restart-book-btn"
-            title="العودة إلى الغلاف الأول"
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            <span>العودة للغلاف • Re-read Book</span>
-          </button>
         </div>
       </div>
     </div>
