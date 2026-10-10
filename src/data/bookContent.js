@@ -7,13 +7,12 @@
  */
 
 export const bookContent = {
-  // ألوان الثيم (برجاندي مخملي فاخر وداكن مطابق للصورة + أبيض نقي)
+  // ألوان الثيم (برجاندي مخملي عميق فاخر + أبيض نقي)
   theme: {
     burgundy: "#4a1017",
-    burgundyDark: "#30080d",
-    burgundyAccent: "#631520",
+    burgundyDark: "#2e070c",
+    burgundyAccent: "#6b1723",
     goldScript: "#e29b62",
-    creamCard: "#fbf8f3",
     white: "#ffffff",
   },
 
@@ -39,87 +38,71 @@ export const bookContent = {
         desc: "Una oportunidad para seguir sumando locura y abrazos."
       }
     ],
-    // صورة الغلاف توضع كاملة داخل الإطار الأبيض بدون أي قص
+    // صورة الغلاف (توضع داخل الإطار الأبيض كاملة بدون أي قص)
     image: "/images/Couple (2).jpg",
   },
 
-  // 2️⃣ الصفحة 1: ميدالية القلبين + رسالة الحب
-  spread1: {
-    leftPage: {
-      locket: {
-        titleLeft: "My",
-        titleRight: "Love",
-        leftHeartImage: "/images/locket-left.jpg",
-        rightHeartImage: "/images/locket-right.jpg",
-      },
-      letter: {
-        scriptHeading: "love",
-        paragraphs: [
-          "Sometimes it's hard to put into words just how much you mean to me, but as I write this, I want the world to know what an incredible partner you are. You are the first thing I think about when I wake up, and the last person I want to talk to before I fall asleep. Every day with you is a gift, a constant reminder that the best things in life are the simplest ones.",
-          "You are the quiet comfort on a chaotic day and the biggest cheerleader when I'm chasing a dream. I value the little things that truly define us: the way you make my coffee just right without having to ask, the shared glance across the room that says everything without a single word, and the easy, effortless way we can make each other laugh until our stomachs hurt. Those small, beautiful moments are what I cherish the most."
-        ]
-      }
-    },
+  // 2️⃣ الصفحة 1: كارت رسالة القطة (Message Page)
+  messagePage: {
+    // صورة القطة بالأعلى (يمكن استبدالها بأي صورة تختارها)
+    topImage: "/images/cat.jpg",
+    title: "Happy Birthday, my love.",
+    message: "Being with you is truly one of the best things that has ever happened to me. From the moment you came into my life, everything started to feel brighter and more meaningful..."
+  },
 
-    // 3️⃣ الصفحة 2: شبكة 9 صور (Full Page)
-    rightPage: {
-      photos: [
-        { id: 1, url: "/images/grid-1.jpg" },
-        { id: 2, url: "/images/grid-2.jpg" },
-        { id: 3, url: "/images/grid-3.jpg" },
-        { id: 4, url: "/images/grid-4.jpg" },
-        { id: 5, url: "/images/grid-5.jpg" },
-        { id: 6, url: "/images/grid-6.jpg" },
-        { id: 7, url: "/images/grid-7.jpg" },
-        { id: 8, url: "/images/grid-8.jpg" },
-        { id: 9, url: "/images/grid-9.jpg" },
-      ]
-    }
+  // 3️⃣ الصفحة 2: صفحة الـ 6 صور (Memories 2x3 Grid)
+  memoriesPage: {
+    title: "tap a memory to reveal",
+    // مصفوفة الـ 6 صور (كل 2 بجانب بعض)
+    photos: [
+      { id: 1, url: "/images/grid-1.jpg" },
+      { id: 2, url: "/images/grid-2.jpg" },
+      { id: 3, url: "/images/grid-3.jpg" },
+      { id: 4, url: "/images/grid-4.jpg" },
+      { id: 5, url: "/images/grid-5.jpg" },
+      { id: 6, url: "/images/grid-6.jpg" },
+    ]
   },
 
   // 4️⃣ الصفحة 3: مشغل الأغنية العصري (Modern Burgundy Player)
-  spread2: {
-    leftPage: {
-      song: {
-        title: "Our Song",
-        artist: "every word for you",
-        stampImage: "/images/song-cover.jpg",
-        audioUrl: "/audio/song.mp3",
-      }
-    },
-
-    // 5️⃣ الصفحة 4: LOVE LOVE LOVE وبولارويد (Full Page)
-    rightPage: {
-      bigWords: ["LOVE", "LOVE", "LOVE", "LOVE"],
-      cursiveOverlays: [
-        { text: "En este", position: "26%" },
-        { text: "lugar", position: "48%" },
-        { text: "favorito", position: "70%" }
-      ],
-      polaroids: [
-        {
-          id: 1,
-          image: "/images/polaroid-1.jpg",
-          rotation: 12,
-          top: "14%",
-          right: "12%"
-        },
-        {
-          id: 2,
-          image: "/images/polaroid-2.jpg",
-          rotation: -10,
-          bottom: "16%",
-          left: "14%"
-        }
-      ]
+  musicPage: {
+    song: {
+      title: "Our Song",
+      artist: "every word for you",
+      stampImage: "/images/Couple (2).jpg",
+      audioUrl: "/audio/song.mp3",
     }
   },
 
-  // 6️⃣ الصفحة 5: كارت You Are Loved (Back Page)
+  // 5️⃣ الصفحة 4: LOVE LOVE LOVE وبولارويد (Full Page)
+  lovePage: {
+    bigWords: ["LOVE", "LOVE", "LOVE", "LOVE"],
+    cursiveOverlays: [
+      { text: "En este", position: "26%" },
+      { text: "lugar", position: "48%" },
+      { text: "favorito", position: "70%" }
+    ],
+    polaroids: [
+      {
+        id: 1,
+        image: "/images/polaroid-1.jpg",
+        rotation: 12,
+        top: "14%",
+        right: "12%"
+      },
+      {
+        id: 2,
+        image: "/images/polaroid-2.jpg",
+        rotation: -10,
+        bottom: "16%",
+        left: "14%"
+      }
+    ]
+  },
+
+  // 6️⃣ الصفحة 5: صورة القلب النهائية (Lace Heart Page)
   backPage: {
-    image: "/images/back-cover.jpg",
-    title: "You are",
-    titleSecondLine: "loved.",
-    subtitle: "In every whispered breeze and\nevery star above.",
+    // صورة القلب المخططة بالدانتيل (مجرد صورة تتغير بسهولة من هنا)
+    image: "/images/heart-lace-final.jpg",
   }
 };

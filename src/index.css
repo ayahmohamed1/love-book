@@ -1,14 +1,14 @@
 /* =========================================================================
    👑 LUXURY SINGLE-PAGE 3D LOVE BOOK
    Palette: Rich Velvet Damask Burgundy (#4a1017) & Crisp Pure White (#ffffff)
-   Clean Single-Page Experience (Flawless on Mobile & Desktop)
+   6-Page Experience with Smooth Page Curl & Fluid Mobile Gestures
    ========================================================================= */
 
 :root {
   --burgundy-velvet: #4a1017;
-  --burgundy-dark: #2e070c;
+  --burgundy-dark: #2a060a;
   --burgundy-accent: #6b1723;
-  --burgundy-glow: #9e1f30;
+  --burgundy-glow: #e63946;
   --gold-script: #e29b62;
   --card-cream: #fbf8f3;
   --paper-white: #ffffff;
@@ -54,13 +54,13 @@ body {
   align-items: center;
   justify-content: center;
   perspective: 2500px;
-  padding: 1rem 0.5rem;
+  padding: 1rem 0.5rem 4rem;
   position: relative;
 }
 
 .single-book-card {
   width: min(520px, 92vw);
-  max-height: 87vh;
+  max-height: 84vh;
   aspect-ratio: 438 / 579;
   position: relative;
   transform-style: preserve-3d;
@@ -72,29 +72,53 @@ body {
 }
 
 .single-book-card:hover {
-  transform: translateY(-3px) scale(1.008);
+  transform: translateY(-2px) scale(1.006);
   box-shadow: 0 35px 85px -10px rgba(0, 0, 0, 0.9);
 }
 
-/* 3D Page Turn Animations */
+/* Silky Smooth Realistic Page Turn Animation */
 .single-book-card.is-turning-forward {
-  animation: turnForwardAnim 0.42s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: smoothPageTurnForward 0.38s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 .single-book-card.is-turning-backward {
-  animation: turnBackwardAnim 0.42s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: smoothPageTurnBackward 0.38s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-@keyframes turnForwardAnim {
-  0% { transform: scale(1) rotateY(0deg); opacity: 1; }
-  50% { transform: scale(0.96) rotateY(-14deg); opacity: 0.65; }
-  100% { transform: scale(1) rotateY(0deg); opacity: 1; }
+@keyframes smoothPageTurnForward {
+  0% { transform: scale(1) translateX(0) rotateY(0deg); }
+  50% { transform: scale(0.97) translateX(-18px) rotateY(-10deg); filter: brightness(0.9); }
+  100% { transform: scale(1) translateX(0) rotateY(0deg); filter: brightness(1); }
 }
 
-@keyframes turnBackwardAnim {
-  0% { transform: scale(1) rotateY(0deg); opacity: 1; }
-  50% { transform: scale(0.96) rotateY(14deg); opacity: 0.65; }
-  100% { transform: scale(1) rotateY(0deg); opacity: 1; }
+@keyframes smoothPageTurnBackward {
+  0% { transform: scale(1) translateX(0) rotateY(0deg); }
+  50% { transform: scale(0.97) translateX(18px) rotateY(10deg); filter: brightness(0.9); }
+  100% { transform: scale(1) translateX(0) rotateY(0deg); filter: brightness(1); }
+}
+
+/* Sweeping Page Curl Shadow Layer */
+.page-flip-curl-shadow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.page-flip-curl-shadow.forward {
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 40%, rgba(255, 255, 255, 0.15) 100%);
+  animation: shadowSweep 0.38s ease forwards;
+}
+
+.page-flip-curl-shadow.backward {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 40%, rgba(255, 255, 255, 0.15) 100%);
+  animation: shadowSweep 0.38s ease forwards;
+}
+
+@keyframes shadowSweep {
+  0% { opacity: 0; }
+  50% { opacity: 0.8; }
+  100% { opacity: 0; }
 }
 
 /* Hardcover Spine Left Border Depth */
@@ -103,11 +127,11 @@ body {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 15px;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.5) 0%, rgba(255, 255, 255, 0.12) 40%, rgba(0, 0, 0, 0.35) 100%);
+  width: 14px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.55) 0%, rgba(255, 255, 255, 0.12) 40%, rgba(0, 0, 0, 0.35) 100%);
   border-radius: 8px 0 0 8px;
   pointer-events: none;
-  z-index: 20;
+  z-index: 25;
 }
 
 /* Content Container for Each Page */
@@ -123,8 +147,8 @@ body {
 .page-curl-corner-hint {
   position: absolute;
   bottom: 0;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   pointer-events: none;
   z-index: 25;
 }
@@ -141,13 +165,13 @@ body {
   border-radius: 0 0 0 8px;
 }
 
-/* Ambient Floor Shadow */
+/* Floor Ambient Shadow */
 .book-floor-shadow {
   position: absolute;
   left: 5%;
   right: 5%;
-  bottom: -20px;
-  height: 28px;
+  bottom: -18px;
+  height: 26px;
   background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 70%);
   filter: blur(10px);
   pointer-events: none;
@@ -155,12 +179,12 @@ body {
 }
 
 /* =========================================================================
-   PAGE 0: COVER PAGE (OUR LOVE) - IMAGE FITS 100% INSIDE WHITE FRAME
+   PAGE 0: COVER PAGE (OUR LOVE) - IMAGE 100% CONTAINED IN WHITE FRAME
    ========================================================================= */
 .cover-page-root {
   width: 100%;
   height: 100%;
-  background: linear-gradient(rgba(74, 16, 23, 0.94), rgba(46, 7, 12, 0.96)), url('/images/burgundy-texture.jpg') center/cover;
+  background: linear-gradient(rgba(74, 16, 23, 0.94), rgba(42, 6, 10, 0.96)), url('/images/burgundy-texture.jpg') center/cover;
   padding: clamp(0.75rem, 2.5vw, 1.25rem);
   border-radius: 8px 14px 14px 8px;
   position: relative;
@@ -218,7 +242,6 @@ body {
   background: rgba(255, 255, 255, 0.85);
 }
 
-/* 4 Metadata Columns */
 .cover-meta-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -255,7 +278,6 @@ body {
   text-align: center;
 }
 
-/* Big Romantic Hero Image - 100% CONTAINED INSIDE WHITE FRAME */
 .cover-photo-frame {
   flex: 1;
   min-height: 0;
@@ -287,287 +309,288 @@ body {
 }
 
 /* =========================================================================
-   PAGE 1: LOCKET & ROMANTIC CORMORANT GARAMOND ITALIC LETTER
+   PAGE 1: CAT BIRTHDAY MESSAGE PAGE (MATCHING USER SCREENSHOT)
    ========================================================================= */
-.spread1-left {
-  background: #ffffff;
+.single-page-message-root {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(88, 18, 28, 0.96), rgba(58, 10, 16, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
+  padding: clamp(1rem, 3vw, 1.8rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.message-page-inner {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  padding: 0.5rem 0;
 }
 
-.spread1-left .page-content-wrapper {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(0.6rem, 2vw, 1.25rem);
-  gap: clamp(0.4rem, 1.2vw, 0.85rem);
-  height: 100%;
-  min-height: 0;
-}
-
-.locket-section {
+/* Top Rounded Image Card (Cat Picture Spot) */
+.message-image-frame {
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-shrink: 0;
-  padding: 0.2rem 0;
 }
 
-.heart-locket-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.locket-chain-connector {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: -5px;
-  z-index: 5;
-}
-
-.locket-ring {
-  width: clamp(10px, 1.8vw, 14px);
-  height: clamp(10px, 1.8vw, 14px);
-  border-radius: 50%;
-  border: 2px solid #cbd5e1;
-  background: linear-gradient(135deg, #ffffff, #94a3b8);
-}
-
-.locket-duo {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  position: relative;
-}
-
-.locket-half {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-
-.locket-script-label {
-  position: absolute;
-  z-index: 10;
-  font-family: 'Alex Brush', 'Dancing Script', cursive;
-  font-size: clamp(1.4rem, 3.2vw, 2.2rem);
-  color: var(--burgundy-velvet);
-  text-shadow: 0 1px 3px rgba(255,255,255,0.95);
-  pointer-events: none;
-}
-
-.left-label {
-  top: -14px;
-  left: 4px;
-}
-
-.right-label {
-  bottom: -16px;
-  right: 4px;
-}
-
-.heart-metallic-rim {
-  width: clamp(95px, 18vw, 145px);
-  height: clamp(88px, 17vw, 135px);
-  background: linear-gradient(135deg, #e6e8eb 0%, #cbd0d8 25%, #f5f6f8 50%, #9ca3af 75%, #ffffff 100%);
-  clip-path: path('M 77.5 140 C 20 95, 0 65, 0 35 C 0 15, 15 0, 38 0 C 58 0, 72 15, 77.5 25 C 83 15, 97 0, 117 0 C 140 0, 155 15, 155 35 C 155 65, 135 95, 77.5 140 Z');
-  padding: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.2));
-}
-
-.heart-inner-bevel {
-  width: 100%;
-  height: 100%;
-  background: #334155;
-  clip-path: path('M 77.5 140 C 20 95, 0 65, 0 35 C 0 15, 15 0, 38 0 C 58 0, 72 15, 77.5 25 C 83 15, 97 0, 117 0 C 140 0, 155 15, 155 35 C 155 65, 135 95, 77.5 140 Z');
-  padding: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.heart-photo-mask {
-  width: 100%;
-  height: 100%;
-  clip-path: path('M 77.5 140 C 20 95, 0 65, 0 35 C 0 15, 15 0, 38 0 C 58 0, 72 15, 77.5 25 C 83 15, 97 0, 117 0 C 140 0, 155 15, 155 35 C 155 65, 135 95, 77.5 140 Z');
-  position: relative;
+.message-image-card {
+  width: clamp(160px, 45vw, 220px);
+  aspect-ratio: 1 / 1;
+  border-radius: 18px;
   overflow: hidden;
-  background: #111;
+  background: #ffffff;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.heart-photo {
+.message-cat-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 32%;
   display: block;
 }
 
-.locket-hinge {
-  width: 6px;
-  height: clamp(24px, 4vw, 36px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  z-index: 8;
-}
-
-.locket-hinge span {
-  width: 100%;
-  height: 6px;
-  background: linear-gradient(135deg, #e6e8eb, #9ca3af);
-  border-radius: 2px;
-}
-
-/* Bottom: Love Letter Card */
-.love-letter-section {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-}
-
-.love-letter-card {
-  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(46, 7, 12, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
+/* Title: Happy Birthday, my love */
+.message-script-title {
+  font-family: 'Dancing Script', 'Caveat', 'Alex Brush', cursive;
+  font-size: clamp(1.8rem, 4.2vw, 2.6rem);
   color: #ffffff;
-  padding: clamp(0.75rem, 2.2vw, 1.5rem);
-  border-radius: 6px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  box-shadow: 0 8px 24px rgba(74, 16, 23, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  overflow-y: auto;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0.6rem 0 0.3rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
-.letter-heading-script {
-  font-family: 'Alex Brush', 'Dancing Script', cursive;
-  font-size: clamp(2rem, 4vw, 3rem);
-  color: #ffffff;
-  line-height: 1;
-  margin-bottom: 0.35rem;
-  font-weight: 400;
-  flex-shrink: 0;
-}
-
-/* Cormorant Garamond Romantic Slanted Italic & Legible */
-.letter-body-text {
+/* Message Paragraph: Cormorant Garamond Italic */
+.message-body-text {
   font-family: 'Cormorant Garamond', 'Playfair Display', serif;
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(0.8rem, 1.35vw, 1.05rem);
+  font-size: clamp(0.85rem, 1.8vw, 1.15rem);
   line-height: clamp(1.45, 2.2vw, 1.75);
-  letter-spacing: 0.3px;
   color: rgba(255, 255, 255, 0.98);
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.4rem, 1.2vw, 0.75rem);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  max-width: 360px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  padding: 0 0.5rem;
 }
 
-/* =========================================================================
-   PAGE 2: 9-PHOTOS GRID (FULL PAGE DISPLAY)
-   ========================================================================= */
-.spread1-right {
-  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(46, 7, 12, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
-  padding: clamp(0.75rem, 2.5vw, 1.5rem);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+/* Next Page Arrow Button */
+.message-footer-action {
+  margin-top: 0.5rem;
 }
 
-.photo-grid-outer {
-  flex: 1;
+.message-next-arrow-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1.5px solid #ffffff;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
 }
 
-.nine-photos-grid {
+.message-next-arrow-btn:hover {
+  background: #ffffff;
+  color: var(--burgundy-velvet);
+  transform: scale(1.12);
+}
+
+.message-next-arrow-btn:hover svg {
+  color: var(--burgundy-velvet);
+}
+
+/* =========================================================================
+   PAGE 2: 6 MEMORIES PHOTOS (2 COLUMNS X 3 ROWS WITH WASHI TAPE TABS)
+   ========================================================================= */
+.single-page-memories-root {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(42, 6, 10, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
+  padding: clamp(0.75rem, 2.5vw, 1.4rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.memories-page-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.memories-tap-hint {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(0.68rem, 1.3vw, 0.82rem);
+  letter-spacing: 2px;
+  text-transform: lowercase;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+  margin-bottom: clamp(0.4rem, 1.2vw, 0.8rem);
+  flex-shrink: 0;
+}
+
+/* 6 Photos Grid (2 Columns x 3 Rows) */
+.six-photos-grid {
+  flex: 1;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: repeat(3, 1fr);
-  gap: clamp(4px, 1vw, 8px);
+  gap: clamp(6px, 1.5vw, 12px);
   width: 100%;
   height: 100%;
-  max-width: 480px;
-  max-height: 580px;
+  min-height: 0;
 }
 
-.photo-grid-tile {
+.memory-card-tile {
   position: relative;
-  border-radius: 3px;
+  background: #200508;
+  border-radius: 6px;
   overflow: hidden;
-  background: #111;
-  border: 2px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.photo-tile-inner {
+.memory-card-tile:hover {
+  transform: scale(1.03);
+  z-index: 10;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
+}
+
+/* Washi Tape Tab at Top Center */
+.washi-tape-tab {
+  position: absolute;
+  top: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26px;
+  height: 8px;
+  background: rgba(186, 52, 70, 0.85);
+  border-radius: 2px;
+  z-index: 5;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.memory-card-frame {
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  background: #000;
 }
 
-.photo-tile-img {
+.memory-card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
+/* Lightbox Modal */
+.photo-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(10, 2, 4, 0.92);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: min(600px, 90vw);
+  max-height: 85vh;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: -45px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #ffffff;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.lightbox-image-wrap {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 4px solid #ffffff;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+.lightbox-img {
+  width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  display: block;
+}
+
 /* =========================================================================
-   PAGE 3: MODERN BURGUNDY MUSIC PLAYER (INSPIRED BY USER'S REFERENCE)
+   PAGE 3: MODERN BURGUNDY MUSIC PLAYER (COMPACT & CRISP)
    ========================================================================= */
 .single-page-music-root {
   width: 100%;
   height: 100%;
-  background: linear-gradient(rgba(45, 9, 14, 0.96), rgba(20, 4, 7, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
+  background: linear-gradient(rgba(48, 10, 16, 0.96), rgba(20, 4, 7, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
   padding: clamp(0.75rem, 2.5vw, 1.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.modern-music-stage {
+.compact-music-container {
   width: 100%;
-  max-width: 360px;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
 }
 
-/* Vinyl Record Peeking from Top */
-.vinyl-record-peek {
-  width: clamp(140px, 32vw, 180px);
-  height: clamp(140px, 32vw, 180px);
+/* Vinyl Record Peeking Behind Top */
+.compact-vinyl-peek {
+  width: clamp(120px, 28vw, 150px);
+  height: clamp(120px, 28vw, 150px);
   border-radius: 50%;
   background: repeating-radial-gradient(
     circle at center,
     #181818 0px,
     #181818 2px,
-    #252525 3px,
+    #282828 3px,
     #111111 4px
   );
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: -70px;
+  margin-bottom: -60px;
   z-index: 2;
-  transition: transform 0.4s ease;
 }
 
-.vinyl-record-peek.is-spinning {
+.compact-vinyl-peek.is-spinning {
   animation: vinylSpin 3.5s linear infinite;
 }
 
@@ -575,128 +598,123 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-.vinyl-inner-label {
-  width: 48px;
-  height: 48px;
+.vinyl-groove-ring {
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: var(--burgundy-accent);
-  border: 3px solid #ffffff;
+  background: #6b1723;
+  border: 2px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.vinyl-center-hole {
-  width: 10px;
-  height: 10px;
+.vinyl-spindle {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #000;
 }
 
-/* Modern Player Card Container */
-.modern-player-card {
+/* Modern Card */
+.compact-music-card {
   width: 100%;
-  background: rgba(35, 7, 11, 0.92);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 20px;
-  padding: clamp(1rem, 2.5vw, 1.6rem);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+  background: rgba(36, 7, 11, 0.95);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  padding: clamp(0.85rem, 2vw, 1.25rem);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.65);
   display: flex;
   flex-direction: column;
-  gap: clamp(0.5rem, 1.5vw, 0.9rem);
+  gap: clamp(0.45rem, 1.2vw, 0.75rem);
   z-index: 5;
   position: relative;
 }
 
 /* Album Artwork Box */
-.album-artwork-box {
+.artwork-card-box {
   width: 100%;
-  aspect-ratio: 1.1 / 1;
+  aspect-ratio: 1.15 / 1;
   background: #fbf8f3;
-  border-radius: 14px;
+  border-radius: 12px;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  padding: 0.35rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
-.arched-love-banner {
+.arched-script-wrap {
   position: absolute;
-  top: 6px;
+  top: 4px;
   width: 90%;
-  height: 50px;
+  height: 44px;
   z-index: 5;
   pointer-events: none;
 }
 
-.arched-svg-text {
+.arched-svg {
   width: 100%;
   height: 100%;
 }
 
-.arched-text-label {
+.arched-text {
   font-family: 'Cinzel', 'Playfair Display', serif;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 800;
   fill: var(--burgundy-velvet);
   letter-spacing: 2px;
 }
 
-.tilted-album-photo-frame {
-  width: 70%;
+.artwork-tilted-frame {
+  width: 66%;
   aspect-ratio: 1 / 1;
-  transform: rotate(-7deg);
-  border: 5px solid #ffffff;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-  border-radius: 4px;
+  transform: rotate(-6deg);
+  border: 4px solid #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
   overflow: hidden;
   background: #111;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
-.tilted-album-photo {
+.artwork-tilted-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-/* Track Header */
-.modern-track-header {
+/* Track Info */
+.compact-track-info {
   text-align: left;
 }
 
-.modern-song-title {
+.compact-song-title {
   font-family: 'Montserrat', sans-serif;
-  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-size: clamp(0.85rem, 1.8vw, 1.05rem);
   font-weight: 700;
   color: #ffffff;
 }
 
-.modern-song-subtitle {
-  font-size: clamp(0.7rem, 1.4vw, 0.85rem);
+.compact-song-artist {
+  font-size: clamp(0.65rem, 1.2vw, 0.78rem);
   color: rgba(255, 255, 255, 0.65);
-  font-weight: 400;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
-/* Progress Input & Timestamps */
-.modern-progress-box {
+/* Scrubber */
+.compact-timeline-section {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
 }
 
-.timeline-input-wrap {
-  width: 100%;
-}
-
-.modern-range-input {
+.compact-scrubber {
   width: 100%;
   height: 4px;
   -webkit-appearance: none;
@@ -706,77 +724,69 @@ body {
   cursor: pointer;
 }
 
-.modern-range-input::-webkit-slider-thumb {
+.compact-scrubber::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: #ff5268;
+  background: #ff4d6d;
   cursor: pointer;
-  box-shadow: 0 0 8px rgba(255, 82, 104, 0.7);
+  box-shadow: 0 0 8px rgba(255, 77, 109, 0.7);
 }
 
-.timeline-labels-row {
+.compact-time-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   color: rgba(255, 255, 255, 0.5);
-  font-family: 'Montserrat', sans-serif;
 }
 
 /* Controls */
-.modern-controls-row {
+.compact-controls-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(1rem, 3.5vw, 2rem);
-  padding: 0.2rem 0;
+  gap: clamp(1rem, 3vw, 1.6rem);
+  padding: 0.1rem 0;
 }
 
-.modern-ctrl-btn {
+.compact-ctrl-icon-btn {
   background: none;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6px;
-  transition: transform 0.15s ease;
+  padding: 4px;
 }
 
-.modern-ctrl-btn:hover {
-  transform: scale(1.15);
-}
-
-.modern-main-play-btn {
-  width: clamp(44px, 8vw, 54px);
-  height: clamp(44px, 8vw, 54px);
+.compact-play-circle-btn {
+  width: clamp(38px, 7.5vw, 46px);
+  height: clamp(38px, 7.5vw, 46px);
   border-radius: 50%;
-  background: linear-gradient(135deg, #b32638 0%, #851221 100%);
+  background: linear-gradient(135deg, #b32035 0%, #7e1220 100%);
   color: #ffffff;
   border: none;
-  box-shadow: 0 0 22px rgba(179, 38, 56, 0.65);
+  box-shadow: 0 0 18px rgba(179, 32, 53, 0.65);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.15s ease;
 }
 
-.modern-main-play-btn:hover {
+.compact-play-circle-btn:hover {
   transform: scale(1.08);
-  box-shadow: 0 0 28px rgba(179, 38, 56, 0.85);
 }
 
-/* Volume Row */
-.modern-volume-row {
+/* Volume */
+.compact-volume-bar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0 0.2rem;
+  gap: 0.4rem;
 }
 
-.volume-slider-input {
+.compact-volume-slider {
   flex: 1;
   height: 3px;
   -webkit-appearance: none;
@@ -786,20 +796,20 @@ body {
   cursor: pointer;
 }
 
-.volume-slider-input::-webkit-slider-thumb {
+.compact-volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #ffffff;
   cursor: pointer;
 }
 
 /* =========================================================================
-   PAGE 4: LOVE LOVE LOVE & POLAROIDS (FULL PAGE)
+   PAGE 4: LOVE LOVE LOVE & POLAROIDS
    ========================================================================= */
 .spread2-right {
-  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(46, 7, 12, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
+  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(42, 6, 10, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
   padding: clamp(0.75rem, 2.5vw, 1.5rem);
   width: 100%;
   height: 100%;
@@ -833,8 +843,8 @@ body {
 .love-word-line {
   font-family: 'Cinzel', 'Playfair Display', serif;
   font-weight: 900;
-  font-size: clamp(3.2rem, 9vw, 6.2rem);
-  letter-spacing: clamp(6px, 1.8vw, 14px);
+  font-size: clamp(3rem, 8.5vw, 6rem);
+  letter-spacing: clamp(5px, 1.5vw, 14px);
   color: #ffffff;
   line-height: 0.9;
   text-transform: uppercase;
@@ -855,7 +865,7 @@ body {
 
 .cursive-text {
   font-family: 'Alex Brush', 'Dancing Script', cursive;
-  font-size: clamp(2.4rem, 6vw, 4.4rem);
+  font-size: clamp(2.2rem, 5.5vw, 4.2rem);
   color: var(--gold-script);
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
@@ -872,7 +882,7 @@ body {
   padding: 8px 8px 22px 8px;
   border-radius: 2px;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
-  width: min(160px, 35%);
+  width: min(150px, 34%);
   pointer-events: auto;
 }
 
@@ -891,128 +901,88 @@ body {
 }
 
 /* =========================================================================
-   PAGE 5: YOU ARE LOVED (MATCHING IMAGE 6)
+   PAGE 5: FINAL LACE HEART PHOTO PAGE (MATCHING USER STRIPED LACE HEART)
    ========================================================================= */
-.back-cover-spread {
-  background: linear-gradient(rgba(74, 16, 23, 0.96), rgba(46, 7, 12, 0.98)), url('/images/burgundy-texture.jpg') center/cover;
-  padding: clamp(1rem, 3vw, 2rem);
+.single-page-lace-heart-root {
+  width: 100%;
+  height: 100%;
+  background: #260509;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.lace-heart-page-inner {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.5);
 }
 
-.scallop-card-wrapper {
-  width: 100%;
-  max-width: 410px;
-  height: 94%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.scallop-card {
-  width: 100%;
-  height: 100%;
-  background: var(--card-cream);
-  border-radius: 6px;
-  padding: 1.5rem;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.scallop-card.image-card-view {
-  padding: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.back-cover-full-img {
+.lace-heart-full-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   display: block;
-  border-radius: 6px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-}
-
-.scallop-inner-frame {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.scallop-svg-border {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25));
-}
-
-.scallop-card-content {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 2rem 1.5rem;
-  gap: 1.8rem;
-}
-
-.you-are-loved-heading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  line-height: 0.95;
-}
-
-.script-line-1,
-.script-line-2 {
-  font-family: 'Alex Brush', 'Dancing Script', cursive;
-  font-size: clamp(3rem, 7vw, 4.6rem);
-  color: #ffffff;
-  font-weight: 400;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-}
-
-.scallop-sub-poem {
-  font-family: 'Montserrat', serif;
-  font-size: clamp(0.6rem, 1.2vw, 0.74rem);
-  letter-spacing: 2px;
-  line-height: 1.8;
-  color: rgba(255, 255, 255, 0.9);
-  text-transform: lowercase;
-  white-space: pre-line;
-  max-width: 240px;
+  background: #260509;
 }
 
 /* =========================================================================
-   BOTTOM PAGE INDICATOR DOTS
+   FLOATING BOTTOM NAVIGATION BAR (ALWAYS ACCESSIBLE ON MOBILE & DESKTOP)
    ========================================================================= */
-.page-indicator-dots {
-  position: absolute;
-  bottom: 0.75rem;
+.floating-bottom-book-nav {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 8px;
-  z-index: 40;
+  gap: 1.25rem;
+  background: rgba(35, 7, 11, 0.88);
+  backdrop-filter: blur(12px);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.nav-bar-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.nav-bar-btn:hover:not(:disabled) {
+  transform: scale(1.2);
+  color: #ff5268;
+}
+
+.nav-bar-btn.nav-disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.page-indicator-dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .indicator-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.28);
   border: none;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -1020,13 +990,13 @@ body {
 }
 
 .indicator-dot:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.6);
   transform: scale(1.2);
 }
 
 .indicator-dot.active-dot {
-  width: 22px;
+  width: 20px;
   border-radius: 9999px;
-  background: var(--burgundy-glow);
-  box-shadow: 0 0 10px rgba(158, 31, 48, 0.8);
+  background: #ff4d6d;
+  box-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
 }

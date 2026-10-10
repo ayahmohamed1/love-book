@@ -1,35 +1,52 @@
 import React from 'react';
-import HeartLocket from './HeartLocket';
+import { ArrowRight } from 'lucide-react';
 
-export function Spread1Left({ data }) {
-  const { locket, letter } = data;
+export function Spread1Left({ data, onNext }) {
+  const {
+    topImage = "/images/cat.jpg",
+    title = "Happy Birthday, my love.",
+    message = "Being with you is truly one of the best things that has ever happened to me. From the moment you came into my life, everything started to feel brighter and more meaningful..."
+  } = data || {};
 
   return (
-    <div className="spread-page spread1-left">
-      <div className="page-content-wrapper">
-        {/* Top: Silver Double Heart Locket */}
-        <section className="locket-section" aria-label="Heart Locket">
-          <HeartLocket
-            leftImage={locket?.leftHeartImage}
-            rightImage={locket?.rightHeartImage}
-            leftText={locket?.titleLeft || "My"}
-            rightText={locket?.titleRight || "Love"}
-          />
-        </section>
-
-        {/* Bottom: Burgundy Love Letter Card */}
-        <section className="love-letter-section" aria-label="Love Letter">
-          <div className="love-letter-card">
-            <h2 className="letter-heading-script">{letter?.scriptHeading || "love"}</h2>
-            <div className="letter-body-text">
-              {letter?.paragraphs && letter.paragraphs.map((p, idx) => (
-                <p key={idx} className="letter-paragraph">
-                  {p}
-                </p>
-              ))}
-            </div>
+    <div className="single-page-message-root">
+      <div className="message-page-inner">
+        {/* Top Image Spot (Cat Image / Custom Picture) */}
+        <div className="message-image-frame">
+          <div className="message-image-card">
+            <img
+              src={topImage}
+              alt="Love Message"
+              className="message-cat-img"
+              loading="eager"
+            />
           </div>
-        </section>
+        </div>
+
+        {/* Message Heading */}
+        <h2 className="message-script-title">
+          {title}
+        </h2>
+
+        {/* Message Body Paragraph */}
+        <p className="message-body-text">
+          {message}
+        </p>
+
+        {/* Bottom Arrow Button to turn to next page */}
+        <div className="message-footer-action">
+          <button
+            className="message-next-arrow-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onNext) onNext();
+            }}
+            title="الصفحة التالية"
+            aria-label="Next page"
+          >
+            <ArrowRight className="w-6 h-6 text-white" />
+          </button>
+        </div>
       </div>
     </div>
   );

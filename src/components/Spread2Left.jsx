@@ -9,13 +9,13 @@ import {
 } from 'lucide-react';
 
 export function Spread2Left({ data }) {
-  const { song } = data;
+  const { song } = data || {};
   const audioRef = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(182);
-  const [volume, setVolume] = useState(0.8);
+  const [volume, setVolume] = useState(0.85);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -96,76 +96,73 @@ export function Spread2Left({ data }) {
         preload="metadata"
       />
 
-      <div className="modern-music-stage" onClick={(e) => e.stopPropagation()}>
+      <div className="compact-music-container" onClick={(e) => e.stopPropagation()}>
         
-        {/* Top Vinyl Record (Peeking and spinning when playing) */}
-        <div className={`vinyl-record-peek ${isPlaying ? 'is-spinning' : ''}`}>
-          <div className="vinyl-inner-label">
-            <span className="vinyl-center-hole"></span>
+        {/* Vinyl Record Peeking Behind Top of Card */}
+        <div className={`compact-vinyl-peek ${isPlaying ? 'is-spinning' : ''}`}>
+          <div className="vinyl-groove-ring">
+            <div className="vinyl-center-badge">
+              <span className="vinyl-spindle"></span>
+            </div>
           </div>
         </div>
 
-        {/* Music Player Glassmorphic Card */}
-        <div className="modern-player-card">
+        {/* Ultra-Modern Glassmorphic Burgundy Card */}
+        <div className="compact-music-card">
           
-          {/* Album Artwork Card (Cream Paper with Arched "I love you" & Tilted Photo) */}
-          <div className="album-artwork-box">
-            
-            {/* Arched Calligraphic Text */}
-            <div className="arched-love-banner">
-              <svg viewBox="0 0 280 80" className="arched-svg-text">
-                <path id="curvePath" d="M 25 70 Q 140 10 255 70" fill="transparent" />
-                <text className="arched-text-label">
-                  <textPath href="#curvePath" startOffset="50%" textAnchor="middle">
+          {/* Top Artwork Box with Arched 'I love you' & Tilted Polaroid */}
+          <div className="artwork-card-box">
+            <div className="arched-script-wrap">
+              <svg viewBox="0 0 240 60" className="arched-svg">
+                <path id="archCurve" d="M 20 52 Q 120 12 220 52" fill="transparent" />
+                <text className="arched-text">
+                  <textPath href="#archCurve" startOffset="50%" textAnchor="middle">
                     I love you
                   </textPath>
                 </text>
               </svg>
             </div>
 
-            {/* Tilted Photo Booth Style Photo */}
-            <div className="tilted-album-photo-frame">
+            <div className="artwork-tilted-frame">
               <img
-                src={song?.stampImage || "/images/song-cover.jpg"}
+                src={song?.stampImage || "/images/Couple (2).jpg"}
                 alt="Our Song"
-                className="tilted-album-photo"
-                loading="lazy"
+                className="artwork-tilted-img"
+                loading="eager"
               />
             </div>
           </div>
 
-          {/* Track Details */}
-          <div className="modern-track-header">
-            <h3 className="modern-song-title">{song?.title || "Our Song"}</h3>
-            <p className="modern-song-subtitle">{song?.artist || "every word for you"}</p>
+          {/* Song Title & Subtitle */}
+          <div className="compact-track-info">
+            <h4 className="compact-song-title">{song?.title || "Our Song"}</h4>
+            <p className="compact-song-artist">{song?.artist || "every word for you"}</p>
           </div>
 
-          {/* Progress Timeline Scrubber */}
-          <div className="modern-progress-box">
-            <div className="timeline-input-wrap">
-              <input
-                type="range"
-                min="0"
-                max={duration || 100}
-                value={currentTime}
-                onChange={handleSeek}
-                className="modern-range-input"
-                style={{
-                  background: `linear-gradient(to right, #b32638 ${progressPercent}%, rgba(255,255,255,0.2) ${progressPercent}%)`
-                }}
-                aria-label="Progress"
-              />
-            </div>
-            <div className="timeline-labels-row">
-              <span className="time-digit">{formatTime(currentTime)}</span>
-              <span className="time-digit">-{formatTime(remainingTime)}</span>
+          {/* Timeline Scrubber */}
+          <div className="compact-timeline-section">
+            <input
+              type="range"
+              min="0"
+              max={duration || 100}
+              value={currentTime}
+              onChange={handleSeek}
+              className="compact-scrubber"
+              style={{
+                background: `linear-gradient(to right, #e63946 ${progressPercent}%, rgba(255,255,255,0.2) ${progressPercent}%)`
+              }}
+              aria-label="Song progress"
+            />
+            <div className="compact-time-labels">
+              <span>{formatTime(currentTime)}</span>
+              <span>-{formatTime(remainingTime)}</span>
             </div>
           </div>
 
-          {/* Player Controls (Prev, Big Glowing Play/Pause, Next) */}
-          <div className="modern-controls-row">
+          {/* Playback Controls */}
+          <div className="compact-controls-row">
             <button
-              className="modern-ctrl-btn"
+              className="compact-ctrl-icon-btn"
               onClick={(e) => {
                 e.stopPropagation();
                 if (audioRef.current) audioRef.current.currentTime = 0;
@@ -173,24 +170,24 @@ export function Spread2Left({ data }) {
               title="Previous"
               aria-label="Previous"
             >
-              <SkipBack className="w-5 h-5 fill-white text-white" />
+              <SkipBack className="w-4 h-4 fill-white text-white" />
             </button>
 
             <button
-              className="modern-main-play-btn"
+              className="compact-play-circle-btn"
               onClick={togglePlay}
               title={isPlaying ? "Pause" : "Play"}
               aria-label={isPlaying ? "Pause" : "Play"}
             >
               {isPlaying ? (
-                <Pause className="w-6 h-6 fill-white text-white" />
+                <Pause className="w-5 h-5 fill-white text-white" />
               ) : (
-                <Play className="w-6 h-6 fill-white text-white ml-0.5" />
+                <Play className="w-5 h-5 fill-white text-white ml-0.5" />
               )}
             </button>
 
             <button
-              className="modern-ctrl-btn"
+              className="compact-ctrl-icon-btn"
               onClick={(e) => {
                 e.stopPropagation();
                 if (audioRef.current) {
@@ -200,13 +197,13 @@ export function Spread2Left({ data }) {
               title="Next"
               aria-label="Next"
             >
-              <SkipForward className="w-5 h-5 fill-white text-white" />
+              <SkipForward className="w-4 h-4 fill-white text-white" />
             </button>
           </div>
 
-          {/* Volume Control Slider */}
-          <div className="modern-volume-row">
-            <Volume1 className="w-3.5 h-3.5 text-white/60" />
+          {/* Mini Volume Bar */}
+          <div className="compact-volume-bar">
+            <Volume1 className="w-3 h-3 text-white/50" />
             <input
               type="range"
               min="0"
@@ -214,13 +211,13 @@ export function Spread2Left({ data }) {
               step="0.01"
               value={volume}
               onChange={handleVolumeChange}
-              className="volume-slider-input"
+              className="compact-volume-slider"
               style={{
-                background: `linear-gradient(to right, #b32638 ${volume * 100}%, rgba(255,255,255,0.2) ${volume * 100}%)`
+                background: `linear-gradient(to right, #e63946 ${volume * 100}%, rgba(255,255,255,0.2) ${volume * 100}%)`
               }}
               aria-label="Volume"
             />
-            <Volume2 className="w-3.5 h-3.5 text-white/60" />
+            <Volume2 className="w-3 h-3 text-white/50" />
           </div>
 
         </div>
