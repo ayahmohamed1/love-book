@@ -66,7 +66,7 @@ body {
   align-items: center;
   justify-content: center;
   perspective: 2500px;
-  padding: 0.4rem 0.5rem 3.8rem;
+  padding: 0.5rem;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
@@ -79,7 +79,7 @@ body {
   align-items: center;
   justify-content: center;
   transform-style: preserve-3d;
-  margin-top: -1.2rem;
+  margin: 0;
 }
 
 /* Hardcover Base Backplate (الغلاف الخارجي الصلب بلمسة سوداء فاخرة بدون أي لون أصفر) */
@@ -487,63 +487,49 @@ body {
 }
 
 /* =========================================================================
-   CUTE MINIMALIST ARROW BUTTONS
-   (مطابقة لسهم صفحة القطة، مدورة وكيوت وبدون أي كتابة)
+   REALISTIC PHYSICAL DOG-EAR FOLDED PAGE CORNER
+   (ثنية طرف ورقة واقعية تدل بوضوح على التقليب بدون أي حجب للمحتوى)
    ========================================================================= */
-.cute-page-arrow-btn {
+.realistic-page-dog-ear {
   position: absolute;
-  bottom: 14px;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.22);
-  backdrop-filter: blur(10px);
-  border: 1.5px solid #ffffff;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  bottom: 0;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   z-index: 55;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
-  padding: 0;
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.28s ease;
+  user-select: none;
 }
 
-.cute-page-arrow-btn:hover {
-  background: #ffffff;
-  color: var(--burgundy-velvet);
-  transform: scale(1.15);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+.realistic-page-dog-ear.next-dog-ear {
+  right: 0;
+  animation: dogEarBreatheRight 2.6s ease-in-out infinite;
 }
 
-.cute-page-arrow-btn:hover svg {
-  color: var(--burgundy-velvet);
+.realistic-page-dog-ear.prev-dog-ear {
+  left: 0;
+  animation: dogEarBreatheLeft 2.6s ease-in-out infinite;
 }
 
-.cute-page-arrow-btn.next-arrow-btn {
-  right: 14px;
-  animation: cuteArrowNudgeRight 1.6s ease-in-out infinite;
+.realistic-page-dog-ear:hover {
+  transform: scale(1.18);
+  filter: brightness(1.2);
 }
 
-.cute-page-arrow-btn.prev-arrow-btn {
-  left: 14px;
-  animation: cuteArrowNudgeLeft 1.6s ease-in-out infinite;
+.dog-ear-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-.cute-page-arrow-btn.cover-arrow {
-  right: 16px;
-  bottom: 16px;
+@keyframes dogEarBreatheRight {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.08) translate(-1.5px, -1.5px); }
 }
 
-@keyframes cuteArrowNudgeRight {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(3.5px); }
-}
-
-@keyframes cuteArrowNudgeLeft {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(-3.5px); }
+@keyframes dogEarBreatheLeft {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.08) translate(1.5px, -1.5px); }
 }
 
 /* Hardcover Overhang Rims (بروز أطراف الغلاف) */
@@ -1355,74 +1341,4 @@ body {
   background: #260509;
 }
 
-/* =========================================================================
-   FLOATING BOTTOM NAVIGATION BAR (ALWAYS ACCESSIBLE ON MOBILE & DESKTOP)
-   ========================================================================= */
-.floating-bottom-book-nav {
-  position: fixed;
-  bottom: 0.75rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 1.1rem;
-  background: rgba(30, 6, 10, 0.92);
-  backdrop-filter: blur(14px);
-  padding: 0.4rem 0.9rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65);
-  z-index: 100;
-}
 
-.nav-bar-btn {
-  background: none;
-  border: none;
-  color: #ffffff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-.nav-bar-btn:hover:not(:disabled) {
-  transform: scale(1.2);
-  color: #ff5268;
-}
-
-.nav-bar-btn.nav-disabled {
-  opacity: 0.25;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.page-indicator-dots {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-.indicator-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.28);
-  border: none;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  padding: 0;
-}
-
-.indicator-dot:hover {
-  background: rgba(255, 255, 255, 0.6);
-  transform: scale(1.2);
-}
-
-.indicator-dot.active-dot {
-  width: 20px;
-  border-radius: 9999px;
-  background: #ff4d6d;
-  box-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
-}

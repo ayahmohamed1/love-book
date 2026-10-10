@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, ArrowRight, ArrowLeft } from 'lucide-react';
 import CoverPage from './CoverPage';
 import Spread1Left from './Spread1Left';
 import Spread1Right from './Spread1Right';
@@ -39,7 +38,7 @@ export function BookContainer({ content }) {
       case 0:
         return <CoverPage data={content.cover} onOpenBook={() => flipTo(1, 'forward')} />;
       case 1:
-        return <Spread1Left data={content.messagePage} onNext={() => flipTo(2, 'forward')} />;
+        return <Spread1Left data={content.messagePage} />;
       case 2:
         return <Spread1Right data={content.memoriesPage} />;
       case 3:
@@ -103,11 +102,11 @@ export function BookContainer({ content }) {
   // Click on page: left side flips back, right side flips forward
   const handlePageClick = (e) => {
     if (['BUTTON', 'INPUT', 'A'].includes(e.target.tagName)) return;
-    // Don't flip if clicking inside music card, photo lightbox, or cute arrow buttons
+    // Don't flip if clicking inside music card, photo lightbox, or dog-ear corners
     if (
       e.target.closest('.compact-music-card') ||
       e.target.closest('.lightbox-content') ||
-      e.target.closest('.cute-page-arrow-btn')
+      e.target.closest('.realistic-page-dog-ear')
     ) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
@@ -249,33 +248,79 @@ export function BookContainer({ content }) {
             {/* Inner Gutter Shadow (ثنية الكتاب الداخلية) */}
             <div className="book-inner-gutter-shadow"></div>
 
-            {/* Cute Minimalist Arrows (مطابقة للمكان والشكل في كل الصفحات وبدون أي كتابة) */}
+            {/* Realistic Dog-Ear Folded Page Corner (ثنية ورقة واقعية أنيقة تدل على التقليب بدون أي حجب للمحتوى) */}
             {currentPage < totalPages - 1 && !isFlipping && (
-              <button
-                className={`cute-page-arrow-btn next-arrow-btn ${currentPage === 0 ? 'cover-arrow' : ''}`}
+              <div
+                className="realistic-page-dog-ear next-dog-ear"
                 onClick={(e) => {
                   e.stopPropagation();
                   flipForward();
                 }}
-                title="Next"
-                aria-label="Next page"
+                title="اقلب الصفحة"
+                aria-label="Turn to next page"
               >
-                <ArrowRight className="w-5 h-5 text-white" />
-              </button>
+                <svg viewBox="0 0 44 44" className="dog-ear-svg">
+                  <defs>
+                    <filter id="dogEarShadow" x="-30%" y="-30%" width="160%" height="160%">
+                      <feDropShadow dx="-2" dy="-2" stdDeviation="2.5" floodColor="#000000" floodOpacity="0.75" />
+                    </filter>
+                    <linearGradient id="dogEarGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#561019" />
+                      <stop offset="50%" stopColor="#2e0508" />
+                      <stop offset="100%" stopColor="#6b1521" />
+                    </linearGradient>
+                  </defs>
+                  {/* The folded leaf corner flap */}
+                  <path
+                    d="M 44 4 Q 20 20 4 44 L 44 44 Z"
+                    fill="url(#dogEarGradient)"
+                    filter="url(#dogEarShadow)"
+                  />
+                  {/* Crease edge highlight */}
+                  <path
+                    d="M 44 4 Q 20 20 4 44"
+                    fill="none"
+                    stroke="rgba(255, 255, 255, 0.5)"
+                    strokeWidth="1.2"
+                  />
+                </svg>
+              </div>
             )}
 
             {currentPage > 0 && !isFlipping && (
-              <button
-                className="cute-page-arrow-btn prev-arrow-btn"
+              <div
+                className="realistic-page-dog-ear prev-dog-ear"
                 onClick={(e) => {
                   e.stopPropagation();
                   flipBackward();
                 }}
-                title="Previous"
-                aria-label="Previous page"
+                title="الصفحة السابقة"
+                aria-label="Turn to previous page"
               >
-                <ArrowLeft className="w-5 h-5 text-white" />
-              </button>
+                <svg viewBox="0 0 44 44" className="dog-ear-svg">
+                  <defs>
+                    <filter id="prevDogEarShadow" x="-30%" y="-30%" width="160%" height="160%">
+                      <feDropShadow dx="2" dy="-2" stdDeviation="2.5" floodColor="#000000" floodOpacity="0.75" />
+                    </filter>
+                    <linearGradient id="prevDogEarGradient" x1="100%" y1="100%" x2="0%" y2="0%">
+                      <stop offset="0%" stopColor="#561019" />
+                      <stop offset="50%" stopColor="#2e0508" />
+                      <stop offset="100%" stopColor="#6b1521" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M 0 4 Q 24 20 40 44 L 0 44 Z"
+                    fill="url(#prevDogEarGradient)"
+                    filter="url(#prevDogEarShadow)"
+                  />
+                  <path
+                    d="M 0 4 Q 24 20 40 44"
+                    fill="none"
+                    stroke="rgba(255, 255, 255, 0.5)"
+                    strokeWidth="1.2"
+                  />
+                </svg>
+              </div>
             )}
           </div>
 
@@ -288,51 +333,6 @@ export function BookContainer({ content }) {
         {/* 3D Realistic Contact Floor Shadow */}
         <div className="book-scene-floor-shadow"></div>
       </div>
-
-      {/* Floating Bottom Navigation */}
-      <nav className="floating-bottom-book-nav" aria-label="Book navigation">
-        <button
-          className={`nav-bar-btn ${currentPage === 0 || isFlipping ? 'nav-disabled' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            flipBackward();
-          }}
-          disabled={currentPage === 0 || isFlipping}
-          title="الصفحة السابقة"
-          aria-label="Previous page"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-
-        {/* Page Dots Indicator */}
-        <div className="page-indicator-dots">
-          {Array.from({ length: totalPages }).map((_, idx) => (
-            <button
-              key={idx}
-              className={`indicator-dot ${currentPage === idx ? 'active-dot' : ''}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                flipTo(idx, idx > currentPage ? 'forward' : 'backward');
-              }}
-              title={`الصفحة ${idx + 1}`}
-              aria-label={`Go to page ${idx + 1}`}
-            />
-          ))}
-        </div>
-
-        <button
-          className={`nav-bar-btn ${currentPage === totalPages - 1 || isFlipping ? 'nav-disabled' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            flipForward();
-          }}
-          disabled={currentPage === totalPages - 1 || isFlipping}
-          title="الصفحة التالية"
-          aria-label="Next page"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
-      </nav>
     </div>
   );
 }
